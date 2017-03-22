@@ -62,7 +62,7 @@
                             <li><a href="{{ url('/register') }}">登録</a></li>
                         @else
                             <li><a href="{{ url('/workconfirmation') }}">勤務表</a></li>
-                            <li><a href="{{ url('/') }}">休暇申請</a></li>
+                            <li><a href="{{ url('/wrokvacations') }}">休暇申請</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     {{ Auth::user()->name }} <span class="caret"></span>

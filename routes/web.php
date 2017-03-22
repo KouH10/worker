@@ -22,6 +22,7 @@ Route::get('/home', 'HomeController@index');
 Route::resource('work', 'WorkController');
 Route::resource('workconfirmation', 'Work\ConfirmationController');
 Route::resource('workregister', 'Work\RegisterController');
+Route::resource('wrokvacations','WorkVacationsController');
 
 Route::post('groups/store','Groups\GroupsController@store');
 Route::get('groups/edit/{id}','Groups\GroupsController@edit');
@@ -35,4 +36,3 @@ Route::post('affiliations/store','AffiliationsController@store');
 Route::get('affiliations/edit/{id}','AffiliationsController@edit');
 Route::resource('affiliations', 'AffiliationsController');
 Auth::routes();
-

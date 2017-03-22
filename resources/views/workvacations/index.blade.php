@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-<form class="form-horizontal" role="form" method="POST" action="{{ url('workconfirmation') }}"> 
+<form class="form-horizontal" role="form" method="POST" action="{{ url('workconfirmation') }}">
 {!! csrf_field() !!}
     <h2>休暇申請一覧</h2>
     <div class="row">
@@ -23,12 +23,12 @@
       </tr>
     </thead>
     <tbody>
-		@forelse ($works as $work)
+		@forelse ($workVacations as $workVacation)
 		<tr>
 			<td></td>
 			<td></td>
 			<td></td>
-			<td><a href="workregister?date_at={{ $work->date_at }}"name="details" class="btn btn-info btn-sm">詳細</a></td>
+			<td><a href=""name="details" class="btn btn-info btn-sm">詳細</a></td>
 	    </tr>
 	    @empty
 
