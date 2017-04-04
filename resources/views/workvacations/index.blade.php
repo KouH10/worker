@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-<form class="form-horizontal" role="form" method="POST" action="{{ url('workconfirmation') }}">
+<form class="form-horizontal" role="form" method="POST" action="{{ url('workvacations') }}">
 {!! csrf_field() !!}
     <h2>休暇申請一覧</h2>
     <div class="row">

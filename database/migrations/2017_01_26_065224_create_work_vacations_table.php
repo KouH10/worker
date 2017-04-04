@@ -15,15 +15,15 @@ class CreateWorkVacationsTable extends Migration
     {
         Schema::create('work_vacations', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned();        // ユーザID
+            $table->integer('user_id')->unsigned();            // ユーザID
             $table->foreign('user_id')
                   ->references('id')->on('users')
                   ->onDelete('cascade');
-            $table->date('date_at');                       // 勤務日付
-            $table->integer('groupvacation_id');           // 休暇時間開始
-            $table->time('start_at');                      // 休暇時間開始
-            $table->time('end_at');                        // 休暇時間終了
-            $table->date('change_at');                     // 振替日付
+            $table->date('date_at');                           // 勤務日付
+            $table->integer('groupvacation_id')->nullable();   // 休暇時間開始
+            $table->time('start_at')->nullable();              // 休暇時間開始
+            $table->time('end_at')->nullable();                // 休暇時間終了
+            $table->date('change_at')->nullable();             // 振替日付
             $table->timestamps();
         });
     }

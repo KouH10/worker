@@ -22,7 +22,9 @@ Route::get('/home', 'HomeController@index');
 Route::resource('work', 'WorkController');
 Route::resource('workconfirmation', 'Work\ConfirmationController');
 Route::resource('workregister', 'Work\RegisterController');
-Route::resource('wrokvacations','WorkVacationsController');
+
+Route::post('workvacations/store','WorkVacationsController@store');
+Route::resource('workvacations','WorkVacationsController');
 
 Route::post('groups/store','Groups\GroupsController@store');
 Route::get('groups/edit/{id}','Groups\GroupsController@edit');

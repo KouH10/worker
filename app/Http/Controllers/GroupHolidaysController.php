@@ -41,7 +41,7 @@ class GroupHolidaysController extends Controller
 	    $messages = [
 	    	'date_at.required'=>'日付は必須です。',
 	    	'date_at.unique'=>'既に日付は登録されています。',
-	        'name.required'=>'名前は必須です。',
+	      'name.required'=>'名前は必須です。',
 	    ];
 
 	    //入力チェック対象
@@ -54,13 +54,13 @@ class GroupHolidaysController extends Controller
 	    }
 
 	    $groupHoliday = new groupHoliday();
-	    $groupHoliday->group_id = $request->groupid; 
+	    $groupHoliday->group_id = $request->groupid;
 	    $groupHoliday->date_at = $request->date_at;
 	    $groupHoliday->name = $request->name;
 
 	    $groupHoliday->save();
 	    //一覧にリダイレクト
 	    return redirect()->to('/groupholidays/'.$request->groupid);
-        
+
     }
 }
