@@ -2,7 +2,7 @@
 // app/Http/helper.php
 use \Carbon\Carbon;
 use App\Libs\HolidayDateTime;
-	
+
 	/**
      * 日時がnull及び空以外の場合のみ日付変換を実施して返却します
      *
@@ -115,10 +115,6 @@ use App\Libs\HolidayDateTime;
      */
 	function wdate_start($dt) {
 		$cdt = Carbon::parse($dt);
-		if($cdt->hour < 9 )
-		{
-			$cdt->hour = 9;
-		}
 		return minute_conversion($cdt,0);
 	}
 
@@ -142,7 +138,7 @@ use App\Libs\HolidayDateTime;
 	function wdate_time($sdt,$edt) {
 		$csdt = Carbon::parse($sdt);
 		$cedt = Carbon::parse($edt);
-		
+
 		if(is_null($sdt) or is_null($edt))
 		{
 			return 0;
@@ -156,7 +152,7 @@ use App\Libs\HolidayDateTime;
 		}
 
 	}
-	
+
 	/**
      * 翌日チェック
      *
@@ -191,14 +187,14 @@ use App\Libs\HolidayDateTime;
 	function holiday_color($dt) {
 
 		$holiday = new HolidayDateTime($dt);
-		
+
 		if($holiday->holiday())
 		{
 			return "red";
 		}
 
 		switch( $holiday->format('w'))
-		{	
+		{
 			case 0:
 			case 6:
 				return "red";
@@ -213,7 +209,7 @@ use App\Libs\HolidayDateTime;
      * 分を時間に変換する
      *
      * @param  integer $m
-     * @return  
+     * @return
      */
 	function gethour($m) {
 
@@ -233,15 +229,15 @@ use App\Libs\HolidayDateTime;
      * 深夜勤務間算出
      *
      * @param  integer $m
-     * @return  
+     * @return
      */
 	function getnighttime($ws,$we,$ns,$ne,$now) {
-		
+
 		$sws = ( Carbon::parse($ws)->hour * 60 ) + Carbon::parse($ws)->minute;
 		$swe = ( Carbon::parse($we)->hour * 60 ) + Carbon::parse($we)->minute;
-		$sns = ( Carbon::parse(Carbon::parse($now)->format('Y-m-d').$ns)->hour * 60 ) 
+		$sns = ( Carbon::parse(Carbon::parse($now)->format('Y-m-d').$ns)->hour * 60 )
 			+ Carbon::parse(Carbon::parse($now)->format('Y-m-d').$ns)->minute;
-		$sne = ( Carbon::parse(Carbon::parse($now)->format('Y-m-d').$ne)->hour * 60 ) 
+		$sne = ( Carbon::parse(Carbon::parse($now)->format('Y-m-d').$ne)->hour * 60 )
 			+ Carbon::parse(Carbon::parse($now)->format('Y-m-d').$ne)->minute;
 
 		$cns = 0;
@@ -259,8 +255,7 @@ use App\Libs\HolidayDateTime;
 		elseif(Carbon::parse(Carbon::parse($now)->format('Y-m-d').$ns)->lt(Carbon::parse($we)))
 			$cne = $swe;
 		else
-			$cne = 0;	
-		
+			$cne = 0;
+
 		return max(0,( $cne - $cns )) + max(0,($cye - $cys));
 	}
-

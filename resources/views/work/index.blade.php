@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-<form class="form-horizontal" role="form" method="POST" action="{{ url('workconfirmation') }}"> 
+<form class="form-horizontal" role="form" method="POST" action="{{ url('workconfirmation') }}">
 {!! csrf_field() !!}
 	<div class="form-group form-inline">
 		<label for="period" class="control-label  col-sm-2">期間</label>
@@ -32,6 +32,7 @@
         <th>時間外</th>
         <th>深夜</th>
         <th>休日</th>
+				<th>休暇</th>
         <th></th>
       </tr>
     </thead>
@@ -47,6 +48,7 @@
 	    	<td>{{ gethour($work->overtime)}}</td>
 	    	<td>{{ gethour($work->nighttime) }}</td>
 	    	<td>{{ gethour($work->holidaytime) }}</td>
+				<td>{{ $work->groupvacation_id }}</td>
 	    	<td><a href="workregister?date_at={{ $work->date_at }}"name="details" class="btn btn-info btn-sm">詳細</a></td>
 	    </tr>
 	    @empty

@@ -12,5 +12,4 @@ class Work extends Model
      * @var array
      */
      protected $guarded = array('id');
-
 }

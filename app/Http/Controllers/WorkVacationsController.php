@@ -33,15 +33,29 @@ class WorkVacationsController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * 休暇申請編集
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function edit($id)
     {
-
+      //レコードを検索
+      $workVacation = WorkVacation::find($id);
+      return view('workvacations/edit',compact('workVacation'));
     }
 
+    /**
+     * 休暇申請削除
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+      //レコードを検索
+      $workVacation = WorkVacation::find($id);
+      $workVacation->delete();
+      return redirect()->to('/workvacations');
+    }
 	/**
      * グループ休日新規登録
      *
@@ -89,4 +103,48 @@ class WorkVacationsController extends Controller
       //一覧にリダイレクト
       return redirect()->to('/workvacations');
     }
+
+    /**
+       * グループ休日申請更新
+       *
+       * @return \Illuminate\Http\Response
+       */
+      public function update(Request $request, $id)
+      {
+        //入力ルール
+        $rules = [
+            'change_at'=>'date_format:"Y/m/d"',
+            'start_at'=>'date_format:"G:i"',
+            'end_at'=>'date_format:"G:i"',
+        ];
+        //入力エラーメッセージ
+        $messages = [
+          'date_at.unique'=>'既に日付は登録されています。',
+          'change_at.date_format'=>'振替日付はYYYY/MM/DD形式です。',
+          'start_at.date_format'=>'休暇開始時間はHH:MI形式です。',
+          'end_at.date_format'=>'休暇終了始時間はHH:MI形式です。',
+        ];
+        //入力チェック対象
+        $inputs = $request->all();
+        $validation = \Validator::make($inputs,$rules,$messages);
+        //エラー次の処理
+        if($validation->fails())
+        {
+            return redirect()->back()->withErrors($validation->errors())->withInput();
+        }
+
+        $wv = WorkVacation::find($id);
+
+        $wv->groupvacation_id = $request->groupvacation_id;
+        if($wv->groupvacation_id == 4)
+          $wv->change_at = $request->change_at;
+        elseif($wv->groupvacation_id == 9)
+        {
+          $wv->start_at = $request->start_at;
+          $wv->end_at = $request->end_at;
+        }
+        $wv->save();
+        //一覧にリダイレクト
+        return redirect()->to('/workvacations');
+      }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Work;
 
 use App\Http\Controllers\Controller;
 use App\Work;
+use App\WorkVacation;
 use Illuminate\Http\Request;
 use \Carbon\Carbon;
 use TCPDF;
@@ -35,7 +36,7 @@ class ConfirmationController extends Controller
         }else{
             $period = $request->get('period');
         }
-        
+
         $min =  Work::where('user_id', \Auth::user()->id)->min('date_at');
         if(is_null($min))
         {
@@ -57,24 +58,27 @@ class ConfirmationController extends Controller
                 $min->addMonths(1);
             }
         }
-        
+
         $works = array();
         $max_worktime = 0;
         $now_start = 1;
         $now_end = Carbon::parse($period . '/1')->endOfMonth()->format('d');
         $keydate = Carbon::parse($period . '/1');
         for($i = $now_start; $i<= $now_end; $i++){
-	        $work = work::where('user_id', \Auth::user()->id)
-	            ->where('date_at',$keydate)->first();
+	        $work = work::where('works.user_id', \Auth::user()->id)
+              ->leftJoin('work_vacations', function ($join) {
+                $join->on('works.user_id', '=', 'work_vacations.user_id')->orOn('works.date_at', '=', 'work_vacations.date_at');
+              })
+	            ->where('works.date_at',$keydate)->first();
 	        if(count($work) === 0)
 	        {
 	        	$work = new Work(array('date_at'=>Carbon::parse($keydate)));
 	        }elseif( !is_null($work->worktime) and !empty($work->worktime))
-            {
+          {
                 $max_worktime = $max_worktime + $work->worktime;
-            }
+          }
 	        array_push( $works,$work);
-            $keydate->addDay(1);
+          $keydate->addDay(1);
         }
        	return view('work/index',compact('dates','period','works','max_worktime'));
     }
@@ -115,7 +119,7 @@ class ConfirmationController extends Controller
              //PDF作成
             $pdf = new TCPDF();
             //フォント名,フォントスタイル（空文字でレギュラー）,フォントサイズ
-            $pdf->SetFont('kozminproregular', '', 11);// 
+            $pdf->SetFont('kozminproregular', '', 11);//
             //ページを追加
             $pdf->addPage();
             //viewから起こす

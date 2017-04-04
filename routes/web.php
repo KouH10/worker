@@ -24,6 +24,9 @@ Route::resource('workconfirmation', 'Work\ConfirmationController');
 Route::resource('workregister', 'Work\RegisterController');
 
 Route::post('workvacations/store','WorkVacationsController@store');
+Route::get('workvacations/edit/{id}','WorkVacationsController@edit');
+Route::post('workvacations/update/{id}','WorkVacationsController@update');
+Route::get('workvacations/destroy/{id}','WorkVacationsController@destroy');
 Route::resource('workvacations','WorkVacationsController');
 
 Route::post('groups/store','Groups\GroupsController@store');
