@@ -19,12 +19,12 @@ class TestUserTableSeeder extends Seeder
 
         $user = new User();
         $user->name = "原口 康太郎";
-        $user->email = "k@mtgrp.co.jp";
-        $user->password = Hash::make('kou1010');
+        $user->email = "haraguchi.kotaro@mtgrp.co.jp";
+        $user->password = Hash::make('okinawa');
         $user->save();
 
         $group = new Group();
-        $group->name = "MTD";
+        $group->name = "(株)エム・テー・デー";
         $group->workingstart_st = "09:00";
         $group->workingend_st = "18:00";
         $group->reststart_st = "12:00";
@@ -40,11 +40,11 @@ class TestUserTableSeeder extends Seeder
         $affiliation = new Affiliation();
         $affiliation->user_id = $user->id;
         $affiliation->group_id = $group->id;
-        $affiliation->applystart_at  = "2010-01-01";
-        $affiliation->applyend_at  = "2018-12-31";
+        $affiliation->applystart_at  = "2017-04-01";
+        $affiliation->applyend_at  = "2099-12-31";
         $affiliation->entry_at  = "2010-04-01";
         $affiliation->admin = "1";
-        $affiliation->employee_no = "0001";
+        $affiliation->employee_no = "33";
         $affiliation->save();
 
     }

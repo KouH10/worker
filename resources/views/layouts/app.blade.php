@@ -59,7 +59,6 @@
                         <!-- Authentication Links -->
                         @if (Auth::guest())
                             <li><a href="{{ url('/login') }}">ログイン</a></li>
-                            <li><a href="{{ url('/register') }}">登録</a></li>
                         @else
                             <li><a href="{{ url('/workconfirmation') }}">勤務表</a></li>
                             <li><a href="{{ url('/workvacations') }}">休暇申請</a></li>

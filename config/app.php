@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => '勤務管理システム（お試し版）',
+    'name' => '勤怠管理システム',
 
     /*
     |--------------------------------------------------------------------------

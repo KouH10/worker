@@ -21,8 +21,8 @@
     <div class="panel-body">
 	  <div class="form-group @if(!empty($errors->first('date_at'))) has-error @endif">
 		  	<label for="date_at" class="control-label  col-sm-2">日付</label>
-		  	<div class="col-sm-2">
-			  	<input type="text"  class="form-control" name="date_at" id="date_at" placeholder="2017/03/01" value ="{{ old('date_at',$workVacation->date_at) }}" readOnly=true/>
+		  	<div class="col-sm-3">
+			  	<input type="text"  class="form-control" name="date_at" id="date_at" placeholder="2017/03/01" value ="{{ old('date_at',date_formatA($workVacation->date_at,'Y/m/d')) }}" readOnly=true/>
 		  	</div>
 	  </div>
 	  <div class="form-group @if(!empty($errors->first('groupvacation_id'))) has-error @endif">
@@ -33,17 +33,18 @@
             <option value=2 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 2 ) selected @endif  >午前有給</option>
             <option value=3 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 3 ) selected @endif  >午後有給</option>
             <option value=4 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 4 ) selected @endif  >代休</option>
-            <option value=5 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 5 ) selected @endif  >夏季休暇</option>
-            <option value=6 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 6 ) selected @endif  >冬季休暇</option>
-            <option value=7 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 7 ) selected @endif  >慶弔休暇</option>
-            <option value=8 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 8 ) selected @endif  >産休（産前休業／産後休業）</option>
-            <option value=9 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 9 ) selected @endif  >生理休暇</option>
-            <option value=10 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 10 ) selected @endif  >育児休暇</option>
-            <option value=11 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 11 ) selected @endif  >子の看護休暇</option>
-            <option value=12 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 12 ) selected @endif  >裁判員休暇</option>
-            <option value=13 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 13 ) selected @endif  >母性健康管理のための休暇</option>
-            <option value=14 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 14 ) selected @endif  >介護休業</option>
-            <option value=15 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 15 ) selected @endif  >介護休暇</option>
+            <option value=5 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 5 ) selected @endif  >欠勤</option>
+            <option value=6 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 6 ) selected @endif  >夏季休暇</option>
+            <option value=7 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 7 ) selected @endif  >冬季休暇</option>
+            <option value=8 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 8 ) selected @endif  >慶弔休暇</option>
+            <option value=9 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 9 ) selected @endif  >産休</option>
+            <option value=10 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 10 ) selected @endif  >生理休暇</option>
+            <option value=11 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 11 ) selected @endif  >育児休暇</option>
+            <option value=12 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 12 ) selected @endif  >子の看護休暇</option>
+            <option value=13 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 13 ) selected @endif  >裁判員休暇</option>
+            <option value=14 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 14 ) selected @endif  >母性健康管理</option>
+            <option value=15 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 15 ) selected @endif  >介護休業</option>
+            <option value=16 @if( old('groupvacation_id',$workVacation->groupvacation_id) == 16 ) selected @endif  >介護休暇</option>
           </select>
     </div>
 	  </div>
@@ -62,7 +63,7 @@
     <div id="div_change_at" class="form-group @if(!empty($errors->first('change_at'))) has-error @endif" style="display: none;">
 		  	<label for="change_at" class="control-label  col-sm-2">振替日付</label>
 		  	<div class="col-sm-2">
-			  	<input type="text"  class="form-control" name="change_at" id="change_at" placeholder="2017/03/01" value ="{{ old('change_at',$workVacation->change_at) }}"/>
+			  	<input type="text"  class="form-control" name="change_at" id="change_at" placeholder="2017/03/01" value ="{{ old('change_at',date_formatA($workVacation->change_at,'Y/m/d')) }}"/>
 		  	</div>
 	  </div>
 	  <div class="row">
@@ -99,8 +100,9 @@
     $('select[name="groupvacation_id"]').change(function() {
       switch($('select[name="groupvacation_id"] option:selected').val()){
         case "1": case "2": case "3": case "5":
-        case "6": case "7": case "8": case "10":
-        case "11": case "12": case "13": case "14": case "15":
+        case "6": case "7": case "8": case "9":
+        case "11": case "12": case "13": case "14":
+        case "15": case "16":
             $('#div_change_at').css('display','none');
             $('#div_vacation_at').css('display','none');
             $('#change_at').val() = '';
@@ -113,7 +115,7 @@
             $('#start_at').val() = '';
             $('#end_at').val() = '';
             break;
-        case "9":
+        case "10":
             $('#div_change_at').css('display','none');
             $('#div_vacation_at').css('display','');
             $('#change_at').val() = '';

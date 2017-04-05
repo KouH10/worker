@@ -14,11 +14,9 @@
 				@endforelse
           </select>
 		</div>
-		<div class="col-sm-2" >
+		<div class="col-sm-3" >
 			<button type="submit" value="search" name="search" class="btn btn-success btn-sm">検 索</button>
-		</div>
-		<div class="col-sm-2" >
-			<button value="search" name="search" class="btn btn-success btn-sm">報告書</button>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" value="report" name="report" class="btn btn-success btn-sm">報告書出力</button>
 		</div>
 	</div>
 	<table class="table table-striped">
@@ -39,24 +37,30 @@
     <tbody>
 		@forelse ($works as $work)
 		<tr>
-	    	<td><span style="color :{{ holiday_color($work->date_at) }};">
-	    	{{ date_formatA($work->date_at,"m/d") . date_week($work->date_at) }}</span></td>
-	    	<td>{{ date_formatA($work->attendance_at,"G:i") }}</td>
-	    	<td><span>{{wdate_nextDay($work->date_at,$work->leaving_at) }} {{ date_formatA($work->leaving_at,"G:i") }}</span></td>
-	    	<td>{{ gethour($work->worktime) }}</td>
-	    	<td>{{ gethour($work->predeterminedtime) }}</td>
-	    	<td>{{ gethour($work->overtime)}}</td>
-	    	<td>{{ gethour($work->nighttime) }}</td>
-	    	<td>{{ gethour($work->holidaytime) }}</td>
-				<td>{{ $work->groupvacation_id }}</td>
-	    	<td><a href="workregister?date_at={{ $work->date_at }}"name="details" class="btn btn-info btn-sm">詳細</a></td>
+	    	<td><span style="color :{{ holiday_color($work['date_at']) }};">
+	    	{{ date_formatA($work['date_at'],"m/d") . date_week($work['date_at']) }}</span></td>
+	    	<td>{{ date_formatA($work['attendance_at'],"G:i") }}</td>
+	    	<td><span>{{wdate_nextDay($work['date_at'],$work['leaving_at']) }} {{ date_formatA($work['leaving_at'],"G:i") }}</span></td>
+	    	<td>{{ gethour($work['worktime']) }}</td>
+	    	<td>{{ gethour($work['predeterminedtime']) }}</td>
+	    	<td>{{ gethour($work['overtime'])}}</td>
+	    	<td>{{ gethour($work['nighttime']) }}</td>
+	    	<td>{{ gethour($work['holidaytime']) }}</td>
+				<td>{{ getvacationname($work['groupvacation_id']) }}</td>
+	    	<td><a href="workregister?date_at={{ $work['date_at'] }}"name="details" class="btn btn-info btn-sm">詳細</a></td>
 	    </tr>
 	    @empty
 
 		@endforelse
 		<tr>
 			<td colspan="3"><b>合計</b></td>
-			<td colspan="6"><b class="lead">{{ gethour($max_worktime) }} h</b></td>
+			<td><b class="lead">{{ gethour($gokei['worktime'])}} h</b></td>
+			<td><b class="lead">{{ gethour($gokei['predeterminedtime'])}} h</b></td>
+			<td><b class="lead">{{ gethour($gokei['overtime'])}} h</b></td>
+			<td><b class="lead">{{ gethour($gokei['nighttime'])}} h</b></td>
+			<td><b class="lead">{{ gethour($gokei['holidaytime'])}} h</b></td>
+			<td></td>
+			<td></td>
 		</tr>
 	</tbody>
 	</table>

@@ -10,7 +10,7 @@ use App\Libs\HolidayDateTime;
      * @param  string  $format
      * @return string
      */
-     function date_formatA($dt,$fromat) {
+  function date_formatA($dt,$fromat) {
 
 	 	if( is_null($dt) or empty ($dt))
 	 	{
@@ -258,4 +258,32 @@ use App\Libs\HolidayDateTime;
 			$cne = 0;
 
 		return max(0,( $cne - $cns )) + max(0,($cye - $cys));
+	}
+
+	/**
+     * 休暇IDの名称を返却する
+     *
+     * @param  integer $id
+     * @return
+     */
+	function getvacationname($id) {
+		switch($id){
+			case 1: return "有給" ;
+			case 2: return "午前有給" ;
+			case 3: return "午後有給" ;
+			case 4: return "代休" ;
+			case 5: return "欠勤" ;
+			case 6: return "夏季休暇" ;
+			case 7: return "冬季休暇" ;
+			case 8: return "慶弔休暇" ;
+			case 9: return "産休" ;
+			case 10: return "生理休暇" ;
+			case 11: return "育児休暇" ;
+			case 12: return "子の看護休暇" ;
+			case 13: return "裁判員休暇" ;
+			case 14: return "母性健康管理" ;
+			case 15: return "介護休業" ;
+			case 16: return "介護休暇" ;
+		}
+			return '';
 	}
