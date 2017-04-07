@@ -43,7 +43,7 @@ td.tfoot{
 </style>
 <div>
 
-    <p class="title">{{substr($period,0,4)}}年{{substr($period,5,2)}}月分　勤怠管理報告書</p>
+    <p class="title">{{$period}}月分　勤怠管理報告書</p>
     <div class="row">
          <label>会社名：{{$affiliation->group->name}}</label>
     </div>

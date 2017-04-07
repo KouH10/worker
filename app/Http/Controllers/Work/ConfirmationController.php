@@ -59,21 +59,23 @@ class ConfirmationController extends Controller
                 $min->addMonths(1);
             }
         }
-
+        array_push($dates,Carbon::now('Asia/Tokyo')->startOfMonth()->addMonths(1)->format('Y年m月'));
+        $p = str_replace("年","/",$period);
+        $p = str_replace("月","/",$p);
+        $now = Carbon::parse($request->get('dateFrom'));
         $works = array();
         $gokei = ['worktime'=>0,'predeterminedtime'=>0,'overtime'=>0,'nighttime'=>0,'holidaytime'=>0];
-        $now_start = 1;
-        $period = str_replace("年","/",$period);
-        $period = str_replace("月","/",$period);
-        $now_end = Carbon::parse($period . '1')->endOfMonth()->format('d');
-        $keydate = Carbon::parse($period . '1');
-        for($i = $now_start; $i<= $now_end; $i++){
-	        $work = work::where('user_id', \Auth::user()->id)
-	            ->where('date_at',$keydate)->first();
-	        if(count($work) === 0)
-	        {
-	        	$work = new Work(array('date_at'=>Carbon::parse($keydate)));
-	        }elseif( !is_null($work->worktime) and !empty($work->worktime))
+        $now_start = 21;
+        $now_end = Carbon::parse($p.'21');
+        $keydate = Carbon::parse($p.'21')->subMonths(1);
+        while(1){
+          if($now_end->eq($keydate)){break;}
+          $work = work::where('user_id', \Auth::user()->id)
+              ->where('date_at',$keydate)->first();
+          if(count($work) === 0)
+          {
+            $work = new Work(array('date_at'=>Carbon::parse($keydate)));
+          }elseif( !is_null($work->worktime) and !empty($work->worktime))
           {
                 $gokei['worktime'] = $gokei['worktime'] + $work->worktime;
                 $gokei['predeterminedtime'] = $gokei['predeterminedtime'] + $work->predeterminedtime;
@@ -97,15 +99,16 @@ class ConfirmationController extends Controller
           $workVacation = WorkVacation::where('user_id', \Auth::user()->id)
               ->where('date_at',$keydate)->first();
           if(count($workVacation) === 0)
-	        {
-	        	  $data += array('groupvacation_id'=>'');
-	        }else
+          {
+              $data += array('groupvacation_id'=>'');
+          }else
           {
               $data += array('groupvacation_id'=>$workVacation->groupvacation_id);
           }
-	        array_push( $works,$data);
+          array_push( $works,$data);
           $keydate->addDay(1);
         }
+
        	return view('work/index',compact('dates','period','works','gokei'));
     }
 
@@ -122,15 +125,18 @@ class ConfirmationController extends Controller
         }elseif($request->get('report') == 'report')
         {
             $period = $request->get('period');
-            $period = str_replace("年","/",$period);
-            $period = str_replace("月","/",$period);
+            $p = str_replace("年","/",$period);
+            $p = str_replace("月","/",$p);
             $now = Carbon::parse($request->get('dateFrom'));
             $works = array();
             $gokei = ['worktime'=>0,'predeterminedtime'=>0,'overtime'=>0,'nighttime'=>0,'holidaytime'=>0];
-            $now_start = 1;
-            $now_end = Carbon::parse($period . '1')->endOfMonth()->format('d');
-            $keydate = Carbon::parse($period . '1');
-            for($i = $now_start; $i<= $now_end; $i++){
+            $now_start = 21;
+            $now_end = Carbon::parse($p . '21');
+            $keydate = Carbon::parse($p . '21')->subMonths(1);
+            while(1){
+              if($now_end->eq($keydate)){break;}
+              $work = work::where('user_id', \Auth::user()->id)
+                  ->where('date_at',$keydate)->first();
     	        $work = work::where('user_id', \Auth::user()->id)
     	            ->where('date_at',$keydate)->first();
     	        if(count($work) === 0)
@@ -172,7 +178,7 @@ class ConfirmationController extends Controller
 
             /* 同一グループユーザ取得 */
             $affiliation = Affiliation::where('user_id', \Auth::user()->id)
-                ->where('applystart_at','<=',$keydate)->where('applyend_at','>=',$keydate)->first();
+                ->where('applystart_at','<=',$now_end)->where('applyend_at','>=',$now_end)->first();
 
             //return $this->index($request);
              //PDF作成
@@ -188,7 +194,7 @@ class ConfirmationController extends Controller
             //viewから起こす
             $pdf->writeHTML(view('pdf/work_report',compact('period','works','gokei','affiliation'))->render());
             //第一引数はファイル名、第二引数で挙動を指定（D=ダウンロード）
-            $pdf->output(substr($period,0,4).substr($period,5,2).'kinmu.pdf', 'D');
+            $pdf->output(substr($p,0,4).substr($p,5,2).'kinmu.pdf', 'D');
             //今回は適当にブラウザバック
             return Redirect::back();
         }

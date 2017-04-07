@@ -10,7 +10,7 @@ use App\Libs\HolidayDateTime;
 
 class WorkController extends Controller
 {
-    
+
     /**
      * Create a new controller instance.
      *
@@ -48,7 +48,7 @@ class WorkController extends Controller
                         })->where('group_id',$affiliation->group_id)
                         ->where('applystart_at','<=',$now_d)->where('applyend_at','>=',$now_d)
                         ->leftJoin('users', 'affiliations.user_id', '=', 'users.id')
-                        ->orderBy('affiliations.user_id','asc')
+                        ->orderBy('affiliations.employee_no','asc')
                         ->get(['affiliations.user_id','users.name','works.attendance_at','works.leaving_at']);
         }else
         {
@@ -57,7 +57,7 @@ class WorkController extends Controller
         return view('work',compact('now_d','now_t','work','affiliation','datas'));
     }
     /**
-     * 
+     *
      * @param ContactRequest $request
      * @return \Illuminate\Http\Response
      */
@@ -77,7 +77,7 @@ class WorkController extends Controller
         {
             $work = new Work(array('user_id' => \Auth::user()->id,'date_at'=>$target));
         }
-        
+
         // 出勤時間設定
         if ($request->get('attendance') == 'attendance' && is_null($work->attendance_at))
         {
@@ -91,7 +91,7 @@ class WorkController extends Controller
             $work->leaving_at = wdate_end(Carbon::now('Asia/Tokyo'));
             $work->leaving_stamp_at = Carbon::now('Asia/Tokyo');
         }
-        
+
         $work->worktime = 0;
         $work->predeterminedtime = 0;
         $work->overtime = 0;
@@ -108,10 +108,10 @@ class WorkController extends Controller
                 $work->worktime = $work->worktime
                         - wdate_time($affiliation->group->reststart_st ,$affiliation->group->restend_st);
             }
-            
+
             if($target->dayOfWeek == $affiliation->group->legalholiday)
             {// 休日時間
-                $work->holidaytime = $work->worktime;    
+                $work->holidaytime = $work->worktime;
             }elseif($target->dayOfWeek == $affiliation->group->notlegalholiday or $holiday->holiday())
             {// 法定外休日及び祝日
                 $work->overtime = $work->worktime;
@@ -122,10 +122,10 @@ class WorkController extends Controller
             {//所定労働時間を超える
                 $work->predeterminedtime = wdate_time($affiliation->group->workingstart_st ,$affiliation->group->workingend_st);
                 $work->overtime =  $work->worktime - wdate_time($affiliation->group->workingstart_st ,$affiliation->group->workingend_st);
-            }             
+            }
             // 深夜時間
             $work->nighttime = getnighttime($work->attendance_at,$work->leaving_at
-                ,$affiliation->group->nightstart_st,$affiliation->group->nightend_st,$target);               
+                ,$affiliation->group->nightstart_st,$affiliation->group->nightend_st,$target);
         }
         $work->save();
 

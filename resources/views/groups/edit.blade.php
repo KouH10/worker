@@ -12,7 +12,7 @@
     </ul>
   </div>
 @endif
-<form class="form-horizontal" role="form" method="POST" action="/groups/update/{{$group->id}}"> 
+<form class="form-horizontal" role="form" method="POST" action="{{url('/groups/update').'/'.$group->id}}"> 
 {!! csrf_field() !!}
  <div class="panel panel-primary">
     <div class="panel-heading">
@@ -31,7 +31,7 @@
 			  	<input type="text"  class="form-control" name="workingstart_st" id="workingstart_st" placeholder="9:00" value ="{{old('workingstart_st',$group->workingstart_st)}}"/>
 		  	</div>
 		  	<div class="col-sm-1">
-		  		<label class="control-label">～</label>	  	
+		  		<label class="control-label">～</label>
 		  	</div>
 		  	<div class="col-sm-2">
 		  	    <input type="text"  class="form-control" name="workingend_st" id="workingend_st" placeholder="18:00" value ="{{old('workingend_st',$group->workingend_st)}}"/>
@@ -43,7 +43,7 @@
 			  	<input type="text"  class="form-control" name="reststart_st" id="reststart_st" placeholder="12:00" value ="{{old('reststart_st',$group->reststart_st)}}"/>
 		  	</div>
 		  	<div class="col-sm-1">
-		  		<label class="control-label">～</label>	  	
+		  		<label class="control-label">～</label>
 		  	</div>
 		  	<div class="col-sm-2">
 		  	    <input type="text"  class="form-control" name="restend_st" id="restend_st" placeholder="13:00" value ="{{old('restend_st',$group->restend_st)}}"/>
@@ -55,7 +55,7 @@
 			  	<input type="text"  class="form-control" name="nightstart_st" id="nightstart_st" placeholder="22:00" value ="{{old('nightstart_st',$group->nightstart_st)}}"/>
 		  	</div>
 		  	<div class="col-sm-1">
-		  		<label class="control-label">～</label>	  	
+		  		<label class="control-label">～</label>
 		  	</div>
 		  	<div class="col-sm-2">
 		  	    <input type="text"  class="form-control" name="nightend_st" id="nightend_st" placeholder="5:00" value ="{{old('nightend_st',$group->nightend_st)}}"/>

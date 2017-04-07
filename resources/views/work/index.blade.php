@@ -9,7 +9,7 @@
 		<div class="col-sm-2">
 			<select class="form-control combo_select" id="period" name="period">
 	            @forelse ($dates as $date)
-	               <option value="{{ $date }}" @if( $date == $period ) selected @endif >{{ $date }}</option>
+	               <option value="{{ $date }}" @if( $date==$period ) selected @endif >{{ $date }}</option>
 	    		@empty
 				@endforelse
           </select>
