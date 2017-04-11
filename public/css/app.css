@@ -7,7 +7,7 @@
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 html {
-  font-family: sans-serif;
+  font-family: 游ゴシック体, 'Yu Gothic', YuGothic, 'ヒラギノ角ゴシック Pro', 'Hiragino Kaku Gothic Pro', メイリオ, Meiryo, Osaka, 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
@@ -7708,4 +7708,60 @@ div.check-group input {
     outline:none;
     display: none;
 }
+/* 不要な列を消す */
+@media (max-width: 640px) {
+    #workerlist th:nth-child(5),
+    #workerlist td:nth-child(5),
+    #workerlist th:nth-child(6),
+    #workerlist td:nth-child(6),
+    #workerlist th:nth-child(7),
+    #workerlist td:nth-child(7),
+    #workerlist th:nth-child(8),
+    #workerlist td:nth-child(8)
+    {
+        display: none;
+    }
+}
 
+.line-btn{
+  background:#1AAB8A;
+  color:#fff;
+  border:none;
+  position:relative;
+  height:60px;
+  font-size:1.6em;
+  padding:0 2em;
+  cursor:pointer;
+  transition:800ms ease all;
+  outline:none;
+}
+@media (max-width: 640px) {
+  .line-btn{
+    font-size:0.8em;
+    padding:0 1em;
+  }
+}
+.line-btn:hover{
+  background:#fff;
+  color:#1AAB8A;
+}
+.line-btn:before,.line-btn:after{
+  content:'';
+  position:absolute;
+  top:0;
+  right:0;
+  height:2px;
+  width:0;
+  background: #1AAB8A;
+  transition:400ms ease all;
+}
+.line-btn:after{
+  right:inherit;
+  top:inherit;
+  left:0;
+  bottom:0;
+}
+.line-btn:hover:before,.line-btn:hover:after{
+  width:100%;
+  transition:800ms ease all;
+}

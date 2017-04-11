@@ -6,20 +6,22 @@
 {!! csrf_field() !!}
 	<div class="form-group form-inline">
 		<label for="period" class="control-label  col-sm-2">期間</label>
-		<div class="col-sm-2">
+		<div class="col-sm-3">
 			<select class="form-control combo_select" id="period" name="period">
-	            @forelse ($dates as $date)
+	        @forelse ($dates as $date)
 	               <option value="{{ $date }}" @if( $date==$period ) selected @endif >{{ $date }}</option>
 	    		@empty
-				@endforelse
+				  @endforelse
           </select>
 		</div>
-		<div class="col-sm-3" >
+		<div class="col-sm-2" >
 			<button type="submit" value="search" name="search" class="btn btn-success btn-sm">検 索</button>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" value="report" name="report" class="btn btn-success btn-sm">報告書出力</button>
+		</div>
+		<div class="col-sm-1" >
+			<button type="submit" value="report" name="report" class="btn btn-success btn-sm">報告書出力</button>
 		</div>
 	</div>
-	<table class="table table-striped">
+	<table class="table table-striped" id="workerlist">
 	<thead>
       <tr>
         <th>日付</th>
@@ -53,7 +55,9 @@
 
 		@endforelse
 		<tr>
-			<td colspan="3"><b>合計</b></td>
+			<td colspan="1"><b>合計</b></td>
+			<td></td>
+			<td></td>
 			<td><b class="lead">{{ gethour($gokei['worktime'])}} h</b></td>
 			<td><b class="lead">{{ gethour($gokei['predeterminedtime'])}} h</b></td>
 			<td><b class="lead">{{ gethour($gokei['overtime'])}} h</b></td>
