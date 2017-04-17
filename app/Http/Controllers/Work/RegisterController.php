@@ -72,12 +72,12 @@ class RegisterController extends Controller
 
         	$work = work::where('user_id', \Auth::user()->id)
             	->where('date_at',Carbon::parse($request->get('date_at')))->first();
-            
+
             if(count($work) === 0)
 	        {
 	        	$work = new Work(array('user_id' => \Auth::user()->id,'date_at'=>Carbon::parse($request->get('date_at'))));
 	        }
-            
+
             // 出勤時間設定
             if(!empty($request->get('attendance_at')))
             {
@@ -98,7 +98,7 @@ class RegisterController extends Controller
             {
             	$work->leaving_at = null;
             }
-            
+
             $work->worktime = 0;
             $work->predeterminedtime = 0;
             $work->overtime = 0;
@@ -115,10 +115,10 @@ class RegisterController extends Controller
                     $work->worktime = $work->worktime
                             - wdate_time($affiliation->group->reststart_st ,$affiliation->group->restend_st);
                 }
-                
+
                 if($target->dayOfWeek == $affiliation->group->legalholiday)
                 {// 休日時間
-                    $work->holidaytime = $work->worktime;    
+                    $work->holidaytime = $work->worktime;
                 }elseif($target->dayOfWeek == $affiliation->group->notlegalholiday or $holiday->holiday())
                 {// 法定外休日及び祝日
                     $work->overtime = $work->worktime;
@@ -127,20 +127,20 @@ class RegisterController extends Controller
                     $work->predeterminedtime = $work->worktime;
                 }else
                 {//所定労働時間を超える
-                    $work->predeterminedtime = wdate_time($affiliation->group->workingstart_st ,$affiliation->group->workingend_st);
-                    $work->overtime =  $work->worktime - wdate_time($affiliation->group->workingstart_st ,$affiliation->group->workingend_st);
+									$work->predeterminedtime = wdate_time($affiliation->group->workingstart_st ,$affiliation->group->workingend_st) - wdate_time($affiliation->group->reststart_st ,$affiliation->group->restend_st);
+	                $work->overtime =  $work->worktime - ( wdate_time($affiliation->group->workingstart_st ,$affiliation->group->workingend_st) - wdate_time($affiliation->group->reststart_st ,$affiliation->group->restend_st));
                 }             
                 // 深夜時間
                 $work->nighttime = getnighttime($work->attendance_at,$work->leaving_at
-                    ,$affiliation->group->nightstart_st,$affiliation->group->nightend_st,$target);               
+                    ,$affiliation->group->nightstart_st,$affiliation->group->nightend_st,$target);
            	}
 
 			$work->content = $request->get('content');
 	        $work->save();
-	        
+
             return $this->index($request);
         }elseif($request->get('vacation_regist') == 'vacation_regist'){
-        	
+
         	$work = work::where('user_id', \Auth::user()->id)
             	->where('date_at',Carbon::parse($request->get('date_at')))->first();
 

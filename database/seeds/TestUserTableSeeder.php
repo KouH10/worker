@@ -17,12 +17,6 @@ class TestUserTableSeeder extends Seeder
         //faker
         $faker = Faker\Factory::create('ja_JP');
 
-        $user = new User();
-        $user->name = "原口 康太郎";
-        $user->email = "haraguchi.kotaro@mtgrp.co.jp";
-        $user->password = Hash::make('okinawa');
-        $user->save();
-
         $group = new Group();
         $group->name = "(株)エム・テー・デー";
         $group->workingstart_st = "09:00";
@@ -37,6 +31,12 @@ class TestUserTableSeeder extends Seeder
         $group->monthstart = "1";
         $group->save();
 
+        $user = new User();
+        $user->name = "原口　康太郎";
+        $user->email = "haraguchi.kotaro@mtgrp.co.jp";
+        $user->password = Hash::make('okinawa');
+        $user->save();
+
         $affiliation = new Affiliation();
         $affiliation->user_id = $user->id;
         $affiliation->group_id = $group->id;
@@ -47,5 +47,20 @@ class TestUserTableSeeder extends Seeder
         $affiliation->employee_no = "33";
         $affiliation->save();
 
+        $user = new User();
+        $user->name = "テスト　太郎";
+        $user->email = "test@mtgrp.co.jp";
+        $user->password = Hash::make('okinawa');
+        $user->save();
+
+        $affiliation = new Affiliation();
+        $affiliation->user_id = $user->id;
+        $affiliation->group_id = $group->id;
+        $affiliation->applystart_at  = "2017-04-01";
+        $affiliation->applyend_at  = "2099-12-31";
+        $affiliation->entry_at  = "2010-04-01";
+        $affiliation->admin = "0";
+        $affiliation->employee_no = "33";
+        $affiliation->save();
     }
 }

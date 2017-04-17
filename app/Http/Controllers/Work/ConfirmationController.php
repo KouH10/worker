@@ -32,9 +32,12 @@ class ConfirmationController extends Controller
     {
         $now = Carbon::now('Asia/Tokyo');
 
-        if( is_null($request->get('period')) ){
+        if( is_null($request->get('period')) && Carbon::now('Asia/Tokyo')->format('d') <=20 ){
             $period = Carbon::now('Asia/Tokyo')->format('Y年m月');
-        }else{
+        }else if( is_null($request->get('period')) ){
+            $period = Carbon::now('Asia/Tokyo')->addMonths(1)->format('Y年m月');
+        }
+        else{
             $period = $request->get('period');
         }
 
@@ -189,6 +192,8 @@ class ConfirmationController extends Controller
             $pdf->SetFont('kozminproregular', '', 11);//
             //余白設定
             $pdf->SetMargins(8,5,8,true);
+            //自動改頁ページしない
+            $pdf->SetAutoPageBreak(false);
             //ページを追加
             $pdf->addPage();
             //viewから起こす

@@ -120,8 +120,8 @@ class WorkController extends Controller
                 $work->predeterminedtime = $work->worktime;
             }else
             {//所定労働時間を超える
-                $work->predeterminedtime = wdate_time($affiliation->group->workingstart_st ,$affiliation->group->workingend_st);
-                $work->overtime =  $work->worktime - wdate_time($affiliation->group->workingstart_st ,$affiliation->group->workingend_st);
+                $work->predeterminedtime = wdate_time($affiliation->group->workingstart_st ,$affiliation->group->workingend_st) - wdate_time($affiliation->group->reststart_st ,$affiliation->group->restend_st);
+                $work->overtime =  $work->worktime - ( wdate_time($affiliation->group->workingstart_st ,$affiliation->group->workingend_st) - wdate_time($affiliation->group->reststart_st ,$affiliation->group->restend_st));
             }
             // 深夜時間
             $work->nighttime = getnighttime($work->attendance_at,$work->leaving_at
