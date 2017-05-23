@@ -65,7 +65,7 @@ class WorkVacationsController extends Controller
     {
       //入力ルール
       $rules = [
-          'date_at'=>'required|unique:work_Vacations,date_at,NULL,id,user_id,'.\Auth::user()->id,
+          'date_at'=>'required|unique:work_vacations,date_at,NULL,id,user_id,'.\Auth::user()->id,
           'change_at'=>'date_format:"Y/m/d"',
           'start_at'=>'date_format:"G:i"',
           'end_at'=>'date_format:"G:i"',

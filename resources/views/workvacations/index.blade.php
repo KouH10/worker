@@ -7,7 +7,7 @@
     <h2>休暇申請一覧</h2>
     <div class="row">
         <div class="col-sm-12">
-            <a href"{{url('/workvacations/create')}}"" class="btn btn-primary" style="margin:20px;">新規登録</a>
+            <a href="{{url('workvacations/create')}}" class="btn btn-primary" >新規登録</a>
         </div>
     </div>
 

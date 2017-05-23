@@ -98,7 +98,15 @@ class RegisterController extends Controller
             {
             	$work->leaving_at = null;
             }
-
+						// 土曜日の場合、その週の労働時間を取得
+		        $sumWeek = 0;
+		        if($target->dayOfWeek == $affiliation->group->notlegalholiday)
+		        {
+								$sumWeek = work::where('user_id', \Auth::user()->id)
+										->where('date_at','>=',$target->copy()->startOfWeek()->subDay(1))
+										->where('date_at','<=',$target)
+										->sum('worktime');
+		        }
             $work->worktime = 0;
             $work->predeterminedtime = 0;
             $work->overtime = 0;
@@ -119,9 +127,16 @@ class RegisterController extends Controller
                 if($target->dayOfWeek == $affiliation->group->legalholiday)
                 {// 休日時間
                     $work->holidaytime = $work->worktime;
-                }elseif($target->dayOfWeek == $affiliation->group->notlegalholiday or $holiday->holiday())
+                }
+								elseif($target->dayOfWeek == $affiliation->group->notlegalholiday)
                 {// 法定外休日及び祝日
-                    $work->overtime = $work->worktime;
+									  if($sumWeek > 2400)
+										{
+												$work->overtime = $work->worktime;
+										}else {
+												$work->overtime = max(0,$sumWeek + $work->worktime - 2400);
+												$work->predeterminedtime = max(0,$work->worktime - $work->overtime);
+										}
                 }elseif($work->worktime <= wdate_time($affiliation->group->workingstart_st ,$affiliation->group->workingend_st) - wdate_time($affiliation->group->reststart_st ,$affiliation->group->restend_st))
                 {//所定労働時間内
                     $work->predeterminedtime = $work->worktime;
@@ -129,7 +144,7 @@ class RegisterController extends Controller
                 {//所定労働時間を超える
 									$work->predeterminedtime = wdate_time($affiliation->group->workingstart_st ,$affiliation->group->workingend_st) - wdate_time($affiliation->group->reststart_st ,$affiliation->group->restend_st);
 	                $work->overtime =  $work->worktime - ( wdate_time($affiliation->group->workingstart_st ,$affiliation->group->workingend_st) - wdate_time($affiliation->group->reststart_st ,$affiliation->group->restend_st));
-                }             
+                }
                 // 深夜時間
                 $work->nighttime = getnighttime($work->attendance_at,$work->leaving_at
                     ,$affiliation->group->nightstart_st,$affiliation->group->nightend_st,$target);

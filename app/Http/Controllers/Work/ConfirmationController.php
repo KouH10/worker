@@ -62,7 +62,7 @@ class ConfirmationController extends Controller
                 $min->addMonths(1);
             }
         }
-        array_push($dates,Carbon::now('Asia/Tokyo')->startOfMonth()->addMonths(1)->format('Y年m月'));
+        array_push($dates,Carbon::now('Asia/Tokyo')->addMonths(1)->format('Y年m月'));
         $p = str_replace("年","/",$period);
         $p = str_replace("月","/",$p);
         $now = Carbon::parse($request->get('dateFrom'));
