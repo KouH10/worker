@@ -67,7 +67,7 @@ use App\Libs\HolidayDateTime;
 	function minute_conversion($dt,$flg)
 	{
 		$cdt = Carbon::parse($dt);
-
+        $cdt->second = 0;
 		// 15分切り上げ
 		if($flg == 0)
 		{
