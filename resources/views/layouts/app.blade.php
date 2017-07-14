@@ -12,7 +12,8 @@
 
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
-
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/css/bootstrap-datepicker.min.css" rel="stylesheet">
     <!-- Scripts -->
     <script>
         window.Laravel = <?php echo json_encode([
@@ -25,7 +26,8 @@
      <script src="/js/worker.js"></script>
 
      <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
-     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js"></script>
+     <script src="/js/bootstrap-datepicker.min.js"></script>
+     <script src="/locales/bootstrap-datepicker.ja.min.js"></script>
      <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/redmond/jquery-ui.css" >
 </head>
 <body>
@@ -60,6 +62,7 @@
                         @if (Auth::guest())
                             <li><a href="{{ url('/login') }}">ログイン</a></li>
                         @else
+
                             <li><a href="{{ url('/workconfirmation') }}">勤務表</a></li>
                             <li><a href="{{ url('/workvacations') }}">休暇申請</a></li>
                             <li class="dropdown">

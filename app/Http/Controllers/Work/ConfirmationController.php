@@ -41,31 +41,8 @@ class ConfirmationController extends Controller
             $period = $request->get('period');
         }
 
-        $min =  Work::where('user_id', \Auth::user()->id)->min('date_at');
-        if(is_null($min))
-        {
-            $min = Carbon::now('Asia/Tokyo')->startOfMonth();
-        }else
-        {
-            $min = Carbon::parse($min)->startOfMonth();
-        }
-
-        $dates = array();
-        while(1)
-        {
-            array_push($dates,$min->format('Y年m月'));
-            if( $min->diffInMonths(Carbon::now('Asia/Tokyo')->startOfMonth()->addDay(1)) == 0)
-            {
-                break;
-            }else
-            {
-                $min->addMonths(1);
-            }
-        }
-        array_push($dates,Carbon::now('Asia/Tokyo')->addMonths(1)->format('Y年m月'));
         $p = str_replace("年","/",$period);
         $p = str_replace("月","/",$p);
-        $now = Carbon::parse($request->get('dateFrom'));
         $works = array();
         $gokei = ['worktime'=>0,'predeterminedtime'=>0,'overtime'=>0,'nighttime'=>0,'holidaytime'=>0];
         $now_start = 21;
@@ -122,10 +99,7 @@ class ConfirmationController extends Controller
     */
     public function store(Request $request)
     {
-        if($request->get('search') == 'search')
-        {
-            return $this->index($request);
-        }elseif($request->get('report') == 'report')
+        if($request->get('report') == 'report')
         {
             $period = $request->get('period');
             $p = str_replace("年","/",$period);
@@ -202,6 +176,9 @@ class ConfirmationController extends Controller
             $pdf->output(substr($p,0,4).substr($p,5,2).'kinmu.pdf', 'D');
             //今回は適当にブラウザバック
             return Redirect::back();
+        }else
+        {
+            return $this->index($request);
         }
     }
 }

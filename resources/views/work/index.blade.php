@@ -2,25 +2,27 @@
 
 @section('content')
 <div class="container">
-<form class="form-horizontal" role="form" method="POST" action="{{ url('workconfirmation') }}">
+<form id="form1" class="" role="form" method="POST" action="{{ url('workconfirmation') }}">
 {!! csrf_field() !!}
-	<div class="form-group form-inline">
-		<label for="period" class="control-label  col-sm-2">期間</label>
-		<div class="col-sm-3">
-			<select class="form-control combo_select" id="period" name="period">
-	        @forelse ($dates as $date)
-	               <option value="{{ $date }}" @if( $date==$period ) selected @endif >{{ $date }}</option>
-	    		@empty
-				  @endforelse
-          </select>
+  <div class="clearfix">
+	  <div class="pull-left"><label class="lead">{{ $period }}度</label></div>
+    <div class="pull-right" class="btn-group btn-group-sm">
+      <input id="period" name="period" type="hidden" value="{{ $period }}"/>
+			<a class="btn btn-default" id="calender"><i id="YearMonth" class="fa fa-calendar" aria-hidden="true" ></i></a>
+		  &nbsp;&nbsp;
+			<a id="BackMonth" href="{{ url('workconfirmation') }}"
+				 class="btn btn-default"><i class="fa fa-chevron-left" aria-hidden="true" title="先月"></i></a>
+			<a id="NowMonth" href="{{ url('workconfirmation') }}"
+				 class="btn btn-default">今月</a>
+			<a id="NextMonth" href="{{ url('workconfirmation') }}"
+				 class="btn btn-default"><i class="fa fa-chevron-right" aria-hidden="true" title="翌月"></i></a>
 		</div>
-		<div class="col-sm-2" >
-			<button type="submit" value="search" name="search" class="btn btn-success btn-sm">検 索</button>
-		</div>
-		<div class="col-sm-1" >
+  </div>
+  <div class="clearfix">
+    <div class="pull-right" >
 			<button type="submit" value="report" name="report" class="btn btn-success btn-sm">報告書出力</button>
 		</div>
-	</div>
+  </div>
 	<table class="table table-striped" id="workerlist">
 	<thead>
       <tr>
@@ -70,4 +72,37 @@
 	</table>
 </form>
 </div>
+<script>
+$(function(){
+  $('#BackMonth').on('click', function() {
+    var date=new Date($('#period').val().substr(0,4),$('#period').val().substr(5,2)-1,1);
+    date.setMonth(date.getMonth()-1);
+    $('#period').val(date.getFullYear() + "年" + ('00' + (date.getMonth() + 1)).slice(-2) + "月");
+    $('#BackMonth').attr('href',$('#BackMonth').attr('href') + '?period=' + $('#period').val());
+  });
+  $('#NowMonth').on('click', function() {
+    //$('#period').val("");
+    $('#form1').submit();
+  });
+  $('#NextMonth').on('click', function() {
+    var date=new Date($('#period').val().substr(0,4),$('#period').val().substr(5,2)-1,1);
+    date.setMonth(date.getMonth()+1);
+    $('#period').val(date.getFullYear() + "年" + ('00' + (date.getMonth() + 1)).slice(-2) + "月");
+    $('#NextMonth').attr('href',$('#NextMonth').attr('href') + '?period=' + $('#period').val());
+  });
+	$('#calender').on('click', function() {
+		 $('#YearMonth').datepicker({
+       dateFormat: "yyyy年mm月",
+       language: 'ja',
+       minViewMode: 1,
+       autoclose: true,
+     });
+		 $('#YearMonth').datepicker('show');
+     $('#YearMonth').datepicker().on('changeDate', function(e) {
+       $('#period').val(e.format(0,"yyyy年mm月"));
+       $('#form1').submit();
+     });
+	});
+});
+</script>
 @endsection
