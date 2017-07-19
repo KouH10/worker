@@ -12,7 +12,7 @@
     </ul>
   </div>
 @endif
-<form class="form-horizontal" role="form" method="POST" action="{{ url('workregister') }}"> 
+<form class="form-horizontal" role="form" method="POST" action="{{ url('workregister') }}">
 {!! csrf_field() !!}
   <div class="row" style="padding-bottom:20px;">
   	<div class="col-sm-12" >
@@ -27,29 +27,62 @@
     <div class="panel-body">
 	  <div class="form-group @if(!empty($errors->first('attendance_at'))) has-error @endif">
 		  	<label for="attendance_at" class="control-label  col-sm-2">勤務開始</label>
-		  	<div class="col-sm-2">
-			  	<input type="text"  class="form-control" name="attendance_at" id="attendance_at" placeholder="HH:MI" 
-		  				value ="{{ date_formatA(old('attendance_at',$work->attendance_at),"G:i")}}"/>
-		  	</div>
-		  	<div class="col-sm-2">
-		  		<label class="control-label">（ {{ date_formatA($work->attendance_stamp_at,"G:i")}} ）</label>	  	
+		  	<div class="col-sm-10">
+          <ul class="list-inline">
+            <li>
+              <select class="form-control combo_select" id="attendance_at_h" name="attendance_at_h" style="width: 80px">
+               <option value=""></option>
+                @for ($i = 0; $i < 24; $i++)
+                  <option value="{{$i}}" @if( old('attendance_at_h',getDateformat($work->attendance_at,'G')) == "$i" ) selected @endif  >{{$i}}</option>
+                @endfor
+              </select>
+            </li>
+            <li><span>:</span></li>
+            <li>
+              <select class="form-control combo_select" id="attendance_at_m" name="attendance_at_m" style="width: 80px">
+                  <option value=""></option>
+                  <option value="00" @if( old('attendance_at_m',getDateformat($work->attendance_at,'i')) == '00' ) selected @endif  >00</option>
+                  <option value="15" @if( old('attendance_at_m',getDateformat($work->attendance_at,'i')) == '15' ) selected @endif  >15</option>
+                  <option value="30" @if( old('attendance_at_m',getDateformat($work->attendance_at,'i')) == '30' ) selected @endif  >30</option>
+                  <option value="45" @if( old('attendance_at_m',getDateformat($work->attendance_at,'i')) == '45' ) selected @endif  >45</option>
+              </select>
+            </li>
+            <li>
+              <label class="control-label">（ {{ date_formatA($work->attendance_stamp_at,"G:i")}} ）</label>
+            </li>
+          </ul>
 		  	</div>
 	  </div>
 	  <div class="form-group @if(!empty($errors->first('leaving_at'))) has-error @endif">
 		  	<label for="leaving_at" class="control-label  col-sm-2">勤務終了</label>
-		  	<div class="col-sm-2">
-			  	<input type="text"  class="form-control" name="leaving_at" id="leaving_at" placeholder="HH:MI" 
-		  				value ="{{ date_formatA(old('leaving_at',$work->leaving_at),"G:i")}}"/>
-		  	</div>
-		  	<div class="col-sm-2">
-		  		<label class="control-label">（ {{ date_formatA(old('leaving_stamp_at',$work->leaving_stamp_at),"G:i")}} ）</label>	  	
-		  	</div>
-		  	<div class="col-sm-3 check-group">
-		  	    <div>
-		  			<input id="next_day" name='next_day' type='checkbox' class="checkbox" value="1" @if($nextflg===1) checked="checked" @endif/>
-		  			<label class="btn btn-default btn-sm" for="next_day">翌日</label>
-		  		</div>
-		  	</div>
+        <div class="col-sm-10">
+          <ul class="list-inline">
+            <li>
+              <select class="form-control combo_select" id="leaving_at_h" name="leaving_at_h" style="width: 80px">
+                <option value=""></option>
+                @for ($i = 0; $i < 24; $i++)
+                  <option value="{{$i}}" @if( old('leaving_at_h',getDateformatN($work->leaving_at,$work->date_at,'G')) == "$i" ) selected @endif  >{{$i}}</option>
+                @endfor
+                @for ($i = 0; $i < 24; $i++)
+                  <option value="翌{{$i}}" @if( old('leaving_at_h',getDateformatN($work->leaving_at,$work->date_at,'G')) == ('翌'."$i") ) selected @endif  >翌{{$i}}</option>
+                @endfor
+              </select>
+            </li>
+            <li><span>:</span></li>
+            <li>
+              <select class="form-control combo_select" id="leaving_at_m" name="leaving_at_m" style="width: 80px">
+                  <option value=""></option>
+                  <option value="00" @if( old('leaving_at_m',getDateformat($work->leaving_at,'i')) == "00" ) selected @endif  >00</option>
+                  <option value="15" @if( old('leaving_at_m',getDateformat($work->leaving_at,'i')) == "15" ) selected @endif  >15</option>
+                  <option value="30" @if( old('leaving_at_m',getDateformat($work->leaving_at,'i')) == "30" ) selected @endif  >30</option>
+                  <option value="45" @if( old('leaving_at_m',getDateformat($work->leaving_at,'i')) == "45" ) selected @endif  >45</option>
+              </select>
+            </li>
+            <li>
+              <label class="control-label">（ {{ date_formatA($work->leaving_stamp_at,"G:i")}} ）</label>
+            </li>
+          </ul>
+        </div>
 	  </div>
 	  <div class="form-group">
 		  	<label for="leaving_at" class="control-label  col-sm-2">合計時間</label>
@@ -111,7 +144,7 @@
 	    $('div.check-group input').each(function(){
 	        if ($(this).attr('checked') == 'checked') {
 	            $(this).next().addClass('btn-danger');
-	 
+
 	        }
 	    });
 	    //クリックした要素にクラス割り当てる

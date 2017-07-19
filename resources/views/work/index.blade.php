@@ -5,7 +5,7 @@
 <form id="form1" class="" role="form" method="POST" action="{{ url('workconfirmation') }}">
 {!! csrf_field() !!}
   <div class="clearfix">
-	  <div class="pull-left"><label class="lead">{{ $period }}度</label></div>
+	  <div class="pull-left"><h3>{{ $period }}度</h3></div>
     <div class="pull-right" class="btn-group btn-group-sm">
       <input id="period" name="period" type="hidden" value="{{ $period }}"/>
 			<a class="btn btn-default" id="calender"><i id="YearMonth" class="fa fa-calendar" aria-hidden="true" ></i></a>

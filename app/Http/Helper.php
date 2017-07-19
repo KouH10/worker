@@ -177,7 +177,32 @@ use App\Libs\HolidayDateTime;
 		}
 
 	}
+	/*
+	 * 日時フォーマットを取得
+	*/
+  function getDateformat($sdt,$pam)
+	{
+		if(is_null($sdt))
+ 	  {
+ 			return '';
+ 	  }else {
+ 	  	$csdt = Carbon::parse($sdt);
+			$csdt->setToStringFormat($pam);
+			return $csdt;
+ 	  }
 
+	}
+	function getDateformatN($sdt,$edt,$pam)
+	{
+		if(is_null($sdt) or is_null($edt))
+ 	  {
+ 			return '';
+ 	  }else {
+ 	  	$csdt = Carbon::parse($sdt);
+			$csdt->setToStringFormat($pam);
+			return wdate_nextDay($edt,$sdt) .$csdt;
+ 	  }
+	}
 	/**
      * 休日の場合、赤色を返却する
      *

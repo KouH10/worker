@@ -92,17 +92,6 @@ class WorkController extends Controller
             $work->leaving_stamp_at = Carbon::now('Asia/Tokyo');
         }
 
-        // 土曜日の場合、その週の労働時間を取得
-        $sumWeek = 0;
-        if($target->dayOfWeek == $affiliation->group->legalholiday)
-        {
-            $sumWork = work::raw('SUM(worktime)')
-                ->where('user_id', \Auth::user()->id)
-                ->where('date_at','>=',$target->copy()->startOfWeek()->subDay(1))
-                ->where('date_at','<=',$target)
-                ->first();
-            $sumWeek = $sumWork;
-        }
         $work->worktime = 0;
         $work->predeterminedtime = 0;
         $work->overtime = 0;
@@ -123,7 +112,7 @@ class WorkController extends Controller
             if($target->dayOfWeek == $affiliation->group->legalholiday)
             {// 休日時間
                 $work->holidaytime = $work->worktime;
-            }elseif($target->dayOfWeek == $affiliation->group->notlegalholiday)
+            }elseif($target->dayOfWeek == $affiliation->group->notlegalholiday or $holiday->holiday())
             {// 法定外休日及び祝日
                 $work->overtime = $work->worktime;
             }elseif($work->worktime <= wdate_time($affiliation->group->workingstart_st ,$affiliation->group->workingend_st) - wdate_time($affiliation->group->reststart_st ,$affiliation->group->restend_st))

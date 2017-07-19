@@ -29,11 +29,12 @@ Route::post('workvacations/update/{id}','WorkVacationsController@update');
 Route::get('workvacations/destroy/{id}','WorkVacationsController@destroy');
 Route::resource('workvacations','WorkVacationsController');
 
+Route::resource('groups', 'Groups\GroupsController');
 Route::post('groups/store','Groups\GroupsController@store');
 Route::get('groups/edit/{id}','Groups\GroupsController@edit');
 Route::post('groups/update/{id}','Groups\GroupsController@update');
 
-Route::resource('groups', 'Groups\GroupsController');
+
 Route::post('groupholidays/store','GroupHolidaysController@store');
 Route::resource('groupholidays', 'GroupHolidaysController');
 
