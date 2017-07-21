@@ -138,7 +138,12 @@ class RegisterController extends Controller
 					$work->content = $request->get('content');
 					$work->save();
 
-					return $this->index($request);
+					if( $target->format('d') <=20 ){
+							$period = $target->format('Y年m月');
+					}else{
+							$period = $target->addMonths(1)->format('Y年m月');
+					}
+					return redirect()->to('/workconfirmation?period='.$period);
 
     }
 }
