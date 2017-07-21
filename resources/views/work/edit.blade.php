@@ -130,7 +130,7 @@
 	  	<div class="col-sm-12">
 	  	  <div style="float: right">
 	      <button type="submit" value="work_regist" name="work_regist" class="btn btn-primary " >登 録</button>
-	      &nbsp;&nbsp;&nbsp;&nbsp;<a href="{{ url('workconfirmation') }}" value="back" name="back" class="btn btn-default">戻 る</a>
+	      &nbsp;&nbsp;&nbsp;&nbsp;<a href="{{ url('workconfirmation') }}?period={{$period}}" value="back" name="back" class="btn btn-default">戻 る</a>
 	      </div>
 	    </div>
 	  </div>
