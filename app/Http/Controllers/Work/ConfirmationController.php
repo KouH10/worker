@@ -32,7 +32,12 @@ class ConfirmationController extends Controller
     {
         $now = Carbon::now('Asia/Tokyo');
 
-        if( is_null($request->get('period')) && Carbon::now('Asia/Tokyo')->format('d') <=20 ){
+        $affiliation = Affiliation::where('user_id', \Auth::user()->id)
+                    ->where('applystart_at','<=',$now->format('Y/m/d'))
+                    ->where('applyend_at','>=',$now->format('Y/m/d'))->first();
+
+        if( is_null($request->get('period')) &&
+          Carbon::now('Asia/Tokyo')->format('d') < $affiliation->group->monthstart ){
             $period = Carbon::now('Asia/Tokyo')->format('Y年m月');
         }else if( is_null($request->get('period')) ){
             $period = Carbon::now('Asia/Tokyo')->addMonths(1)->format('Y年m月');
@@ -45,23 +50,22 @@ class ConfirmationController extends Controller
         $p = str_replace("月","/",$p);
         $works = array();
         $gokei = ['worktime'=>0,'predeterminedtime'=>0,'overtime'=>0,'nighttime'=>0,'holidaytime'=>0];
-        $now_start = 21;
-        $now_end = Carbon::parse($p.'21');
-        $keydate = Carbon::parse($p.'21')->subMonths(1);
+        $now_end = Carbon::parse($p.$affiliation->group->monthstart);
+        $keydate = Carbon::parse($p.$affiliation->group->monthstart)->subMonths(1);
         while(1){
           if($now_end->eq($keydate)){break;}
-          $work = work::where('user_id', \Auth::user()->id)
+            $work = work::where('user_id', \Auth::user()->id)
               ->where('date_at',$keydate)->first();
           if(count($work) === 0)
           {
             $work = new Work(array('date_at'=>Carbon::parse($keydate)));
           }elseif( !is_null($work->worktime) and !empty($work->worktime))
           {
-                $gokei['worktime'] = $gokei['worktime'] + $work->worktime;
-                $gokei['predeterminedtime'] = $gokei['predeterminedtime'] + $work->predeterminedtime;
-                $gokei['overtime'] = $gokei['overtime'] + $work->overtime;
-                $gokei['nighttime'] = $gokei['nighttime'] + $work->nighttime;
-                $gokei['holidaytime'] = $gokei['holidaytime'] + $work->holidaytime;
+            $gokei['worktime'] = $gokei['worktime'] + $work->worktime;
+            $gokei['predeterminedtime'] = $gokei['predeterminedtime'] + $work->predeterminedtime;
+            $gokei['overtime'] = $gokei['overtime'] + $work->overtime;
+            $gokei['nighttime'] = $gokei['nighttime'] + $work->nighttime;
+            $gokei['holidaytime'] = $gokei['holidaytime'] + $work->holidaytime;
           }
           $data = [
             'date_at'=>$work->date_at,
@@ -77,13 +81,13 @@ class ConfirmationController extends Controller
             'holidaytime'=>$work->holidaytime,
           ];
           $workVacation = WorkVacation::where('user_id', \Auth::user()->id)
-              ->where('date_at',$keydate)->first();
+            ->where('date_at',$keydate)->first();
           if(count($workVacation) === 0)
           {
-              $data += array('groupvacation_id'=>'');
+            $data += array('groupvacation_id'=>'');
           }else
           {
-              $data += array('groupvacation_id'=>$workVacation->groupvacation_id);
+            $data += array('groupvacation_id'=>$workVacation->groupvacation_id);
           }
           array_push( $works,$data);
           $keydate->addDay(1);
@@ -105,11 +109,15 @@ class ConfirmationController extends Controller
             $p = str_replace("年","/",$period);
             $p = str_replace("月","/",$p);
             $now = Carbon::parse($request->get('dateFrom'));
+
+            $affiliation = Affiliation::where('user_id', \Auth::user()->id)
+                        ->where('applystart_at','<=',$now->format('Y/m/d'))
+                        ->where('applyend_at','>=',$now->format('Y/m/d'))->first();
+
             $works = array();
             $gokei = ['worktime'=>0,'predeterminedtime'=>0,'overtime'=>0,'nighttime'=>0,'holidaytime'=>0];
-            $now_start = 21;
-            $now_end = Carbon::parse($p . '21');
-            $keydate = Carbon::parse($p . '21')->subMonths(1);
+            $now_end = Carbon::parse($p . $affiliation->group->monthstart);
+            $keydate = Carbon::parse($p . $affiliation->group->monthstart)->subMonths(1);
             while(1){
               if($now_end->eq($keydate)){break;}
               $work = work::where('user_id', \Auth::user()->id)

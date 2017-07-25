@@ -24,7 +24,7 @@
         @forelse ($groups as $group)
         <tr>
             <td>{{ $group->name }}</td>
-            <td><a href="{{url('/groups/edit').'/',$group->id}}" name="details" class="btn btn-info btn-sm">編集</a></td>
+            <td><a href="{{url('/groups/edit').'/'.$group->id}}" name="details" class="btn btn-info btn-sm">編集</a></td>
             <td><a href="#" name="details" class="btn btn-info btn-sm">休日設定</a></td>
             <td><a href="#" name="details" class="btn btn-info btn-sm">休暇設定</a></td>
         </tr>
