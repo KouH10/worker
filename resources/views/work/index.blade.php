@@ -23,6 +23,18 @@
 			<button type="submit" value="report" name="report" class="btn btn-success btn-sm">報告書出力</button>
 		</div>
   </div>
+  <br>
+  <div class="text-center">
+    <table class="table table-bordered" >
+    <tr>
+      <th><span class='lead'>出勤日数</span></th>
+      <td><span class='lead'>{{$gokei['date']}}</span> 日</td>
+      <th><span class='lead'>総労働時間 </span></th>
+      <td><span class='lead'>{{gethour($gokei['worktime'])}}</span> 時間</td>
+      <th><span class='lead'>残業時間</span></th>
+      <td><span class='lead'>{{gethour($gokei['overtime'])}}</span> 時間</td>
+    </ul>
+  </div>
 	<table class="table table-striped" id="workerlist">
 	<thead>
       <tr>

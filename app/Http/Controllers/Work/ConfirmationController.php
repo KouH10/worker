@@ -49,7 +49,7 @@ class ConfirmationController extends Controller
         $p = str_replace("年","/",$period);
         $p = str_replace("月","/",$p);
         $works = array();
-        $gokei = ['worktime'=>0,'predeterminedtime'=>0,'overtime'=>0,'nighttime'=>0,'holidaytime'=>0];
+        $gokei = ['date'=>0,'worktime'=>0,'predeterminedtime'=>0,'overtime'=>0,'nighttime'=>0,'holidaytime'=>0];
         $now_end = Carbon::parse($p.$affiliation->group->monthstart);
         $keydate = Carbon::parse($p.$affiliation->group->monthstart)->subMonths(1);
         while(1){
@@ -59,8 +59,9 @@ class ConfirmationController extends Controller
           if(count($work) === 0)
           {
             $work = new Work(array('date_at'=>Carbon::parse($keydate)));
-          }elseif( !is_null($work->worktime) and !empty($work->worktime))
+          }elseif( !is_null($work->worktime) and !empty($work->worktime) and $work->worktime > 0)
           {
+            $gokei['date'] = $gokei['date'] + 1;
             $gokei['worktime'] = $gokei['worktime'] + $work->worktime;
             $gokei['predeterminedtime'] = $gokei['predeterminedtime'] + $work->predeterminedtime;
             $gokei['overtime'] = $gokei['overtime'] + $work->overtime;
