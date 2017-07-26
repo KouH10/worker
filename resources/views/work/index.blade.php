@@ -10,30 +10,32 @@
       <input id="period" name="period" type="hidden" value="{{ $period }}"/>
 			<a class="btn btn-default" id="calender"><i id="YearMonth" class="fa fa-calendar" aria-hidden="true" ></i></a>
 		  &nbsp;&nbsp;
-			<a id="BackMonth" href="{{ url('workconfirmation') }}"
+			<a id="BackMonth" href=""
 				 class="btn btn-default"><i class="fa fa-chevron-left" aria-hidden="true" title="先月"></i></a>
 			<a id="NowMonth" href="{{ url('workconfirmation') }}"
 				 class="btn btn-default">今月</a>
-			<a id="NextMonth" href="{{ url('workconfirmation') }}"
+			<a id="NextMonth" href=""
 				 class="btn btn-default"><i class="fa fa-chevron-right" aria-hidden="true" title="翌月"></i></a>
 		</div>
   </div>
   <div class="clearfix">
     <div class="pull-right" >
 			<button type="submit" value="report" name="report" class="btn btn-success btn-sm">報告書出力</button>
+      <button type="submit" value="csv" name="csv" class="btn btn-success btn-sm">CSV出力</button>
 		</div>
   </div>
   <br>
   <div class="text-center">
     <table class="table table-bordered" >
     <tr>
-      <th><span class='lead'>出勤日数</span></th>
+      <th><span class='lead'>出勤</span></th>
       <td><span class='lead'>{{$gokei['date']}}</span> 日</td>
-      <th><span class='lead'>総労働時間 </span></th>
+      <th><span class='lead'>総労働 </span></th>
       <td><span class='lead'>{{gethour($gokei['worktime'])}}</span> 時間</td>
-      <th><span class='lead'>残業時間</span></th>
+      <th><span class='lead'>残業</span></th>
       <td><span class='lead'>{{gethour($gokei['overtime'])}}</span> 時間</td>
-    </ul>
+    </tr>
+    </table>
   </div>
 	<table class="table table-striped" id="workerlist">
 	<thead>
@@ -90,17 +92,16 @@ $(function(){
     var date=new Date($('#period').val().substr(0,4),$('#period').val().substr(5,2)-1,1);
     date.setMonth(date.getMonth()-1);
     $('#period').val(date.getFullYear() + "年" + ('00' + (date.getMonth() + 1)).slice(-2) + "月");
-    $('#BackMonth').attr('href',$('#BackMonth').attr('href') + '?period=' + $('#period').val());
+    $('#BackMonth').attr('href','{{ url('workconfirmation') }}' + '?period=' + $('#period').val());
   });
   $('#NowMonth').on('click', function() {
-    //$('#period').val("");
     $('#form1').submit();
   });
   $('#NextMonth').on('click', function() {
     var date=new Date($('#period').val().substr(0,4),$('#period').val().substr(5,2)-1,1);
     date.setMonth(date.getMonth()+1);
     $('#period').val(date.getFullYear() + "年" + ('00' + (date.getMonth() + 1)).slice(-2) + "月");
-    $('#NextMonth').attr('href',$('#NextMonth').attr('href') + '?period=' + $('#period').val());
+    $('#NextMonth').attr('href','{{ url('workconfirmation') }}' + '?period=' + $('#period').val());
   });
 	$('#calender').on('click', function() {
 		 $('#YearMonth').datepicker({
