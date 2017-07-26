@@ -131,4 +131,72 @@ class WorkController extends Controller
 
         return redirect()->to('/work');
     }
+
+    /**
+    * Show the application dashboard.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function grouplist(Request $request)
+    {
+        $now = Carbon::now('Asia/Tokyo');
+        $affiliation = Affiliation::where('user_id', \Auth::user()->id)
+                    ->where('applystart_at','<=',$now->format('Y/m/d'))
+                    ->where('applyend_at','>=',$now->format('Y/m/d'))->first();
+
+        if( is_null($request->get('period')) &&
+          Carbon::now('Asia/Tokyo')->format('d') < $affiliation->group->monthstart ){
+            $period = Carbon::now('Asia/Tokyo')->format('Y年m月');
+        }else if( is_null($request->get('period')) ){
+            $period = Carbon::now('Asia/Tokyo')->addMonths(1)->format('Y年m月');
+        }else{
+            $period = $request->get('period');
+        }
+
+        $p = str_replace("年","/",$period);
+        $p = str_replace("月","/",$p);
+        $works = array();
+        $dates = array();
+        $date_cnts = [ 'month1'=>0,'month2'=>0];
+        $gokei = ['date'=>0,'worktime'=>0,'predeterminedtime'=>0,'overtime'=>0,'nighttime'=>0,'holidaytime'=>0];
+        $now_end = Carbon::parse($p.$affiliation->group->monthstart);
+        $keydate = Carbon::parse($p.$affiliation->group->monthstart)->subMonths(1);
+
+        //同一グループユーザ取得
+        $affiliations = Affiliation::where('id', $affiliation->group_id)
+                    ->where('applystart_at','<=',$now->format('Y/m/d'))
+                    ->where('applyend_at','>=',$now->format('Y/m/d'))->get();
+
+        //表示日付取得
+        while(1)
+        {
+          if($now_end->eq($keydate)){break;}
+          if($now_end->format('m') == $keydate->format('m'))
+            $date_cnts['month2']++;
+          else
+            $date_cnts['month1']++;
+          array_push($dates,$keydate->copy());
+          $keydate->addDay(1);
+        }
+
+        foreach ($affiliations as $as)
+        {
+          $datas = array();
+          array_push($datas,$as->user->name);
+          foreach($dates as $d)
+          {
+            $work = work::where('user_id', $as->user_id)
+              ->where('date_at',$d)->first();
+            if(count($work) != 0)
+            {
+              array_push($datas,date_formatA($work->attendance_at,"G:i")  ."<br>"
+                .wdate_nextDay($d,$work->leaving_at) .date_formatA($work->leaving_at,"G:i"));
+            }else {
+              array_push($datas,"");
+            }
+          }
+          array_push($works,$datas);
+        }
+        return view('work/list',compact('period','works','dates','date_cnts'));
+    }
 }

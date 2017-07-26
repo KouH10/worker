@@ -16,7 +16,7 @@
 {!! csrf_field() !!}
   <div class="row" style="padding-bottom:20px;">
   	<div class="col-sm-12" >
-	  	<h2 style="color :{{ holiday_color($work->date_at) }};" >{{ date("Y/m/d",strtotime($work->date_at)).date_week($work->date_at) }}</h2>
+	  	<h2 style="color :{{ holiday_color($work->date_at) }};" >{{ date("Y/m/d",strtotime($work->date_at))}}({{date_week($work->date_at) }})</h2>
 	  	<input type="hidden" name="date_at" id="date_at" value="{{ date("Y-m-d",strtotime($work->date_at))}} "/>
 	</div>
   </div>

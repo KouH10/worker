@@ -56,7 +56,7 @@
 		@forelse ($works as $work)
 		<tr>
 	    	<td><span style="color :{{ holiday_color($work['date_at']) }};">
-	    	{{ date_formatA($work['date_at'],"m/d") . date_week($work['date_at']) }}</span></td>
+	    	{{ date_formatA($work['date_at'],"m/d")}}({{date_week($work['date_at']) }})</span></td>
 	    	<td>{{ date_formatA($work['attendance_at'],"G:i") }}</td>
 	    	<td><span>{{wdate_nextDay($work['date_at'],$work['leaving_at']) }} {{ date_formatA($work['leaving_at'],"G:i") }}</span></td>
 	    	<td>{{ gethour($work['worktime']) }}</td>

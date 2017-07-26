@@ -33,25 +33,25 @@ use App\Libs\HolidayDateTime;
 		$wk = date('N', strtotime($dt));
  		switch ($wk) {
  			case 1:
- 				$wk = "(月)";
+ 				$wk = "月";
  				break;
  			case 2:
- 				$wk = "(火)";
+ 				$wk = "火";
  				break;
  			case 3:
- 				$wk = "(水)";
+ 				$wk = "水";
  				break;
  			case 4:
- 				$wk = "(木)";
+ 				$wk = "木";
  				break;
  			case 5:
- 				$wk = "(金)";
+ 				$wk = "金";
  				break;
  			case 6:
- 				$wk = "(土)";
+ 				$wk = "土";
  				break;
  			case 7:
- 				$wk = "(日)";
+ 				$wk = "日";
  				break;
  		}
  		return $wk;

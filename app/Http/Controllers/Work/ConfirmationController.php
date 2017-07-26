@@ -95,7 +95,7 @@ class ConfirmationController extends Controller
           $keydate->addDay(1);
         }
 
-       	return view('work/index',compact('dates','period','works','gokei'));
+       	return view('work/index',compact('period','works','gokei'));
     }
 
     /**

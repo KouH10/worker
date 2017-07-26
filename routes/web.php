@@ -19,6 +19,7 @@
 
 Route::get('/', 'WorkController@index');
 Route::get('/home', 'HomeController@index');
+Route::get('work/list', 'WorkController@grouplist');
 Route::resource('work', 'WorkController');
 Route::resource('workconfirmation', 'Work\ConfirmationController');
 Route::resource('workregister', 'Work\RegisterController');
