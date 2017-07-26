@@ -95,8 +95,11 @@
           $('#div_vacation_at').css('display','');
           break;
     }
-    $("#date_at").datepicker();
-    $("#change_at").datepicker();
+    $("#change_at").datepicker({
+      dateFormat: "yyyy/mm/dd",
+      language: 'ja',
+      autoclose: true,
+    });
     $('select[name="groupvacation_id"]').change(function() {
       switch($('select[name="groupvacation_id"] option:selected').val()){
         case "1": case "2": case "3": case "5":

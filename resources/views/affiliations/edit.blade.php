@@ -12,7 +12,7 @@
     </ul>
   </div>
 @endif
-<form class="form-horizontal" role="form" method="POST" action="{{ url('/affiliations/store') }}"> 
+<form class="form-horizontal" role="form" method="POST" action="{{ url('/affiliations/store') }}">
 {!! csrf_field() !!}
  <div class="panel panel-primary">
     <div class="panel-heading">
@@ -65,7 +65,7 @@
 			  	<input type="text"  class="form-control" name="applystart_at" id="applystart_at" placeholder="YYYY/MM/DD"" value ="{{ old('applystart_at') }}"/>
 		  	</div>
 		  	<div class="col-sm-1">
-		  		<label class="control-label">～</label>	  	
+		  		<label class="control-label">～</label>
 		  	</div>
 		  	<div class="col-sm-2">
 		  	    <input type="text"  class="form-control" name="applyend_at" id="applyend_at" placeholder="YYYY/MM/DD"" value ="{{ old('applyend_at') }}"/>
@@ -85,9 +85,21 @@
  </div>
  <script>
   $(function() {
-    $("#entry_at").datepicker();
-    $("#applystart_at").datepicker();
-    $("#applyend_at").datepicker();
+    $("#entry_at").datepicker({
+      dateFormat: "yyyy/mm/dd",
+      language: 'ja',
+      autoclose: true,
+    });
+    $("#applystart_at").datepicker({
+      dateFormat: "yyyy/mm/dd",
+      language: 'ja',
+      autoclose: true,
+    });
+    $("#applyend_at").datepicker({
+      dateFormat: "yyyy/mm/dd",
+      language: 'ja',
+      autoclose: true,
+    });
   });
 </script>
 @endsection
