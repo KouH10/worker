@@ -17,40 +17,40 @@
   				 class="btn btn-default"><i class="fa fa-chevron-right" aria-hidden="true" title="翌月"></i></a>
   		</div>
     </div>
-</div>
-<div>
-<table class="table table-bordered">
-  <thead>
+  <div class ="table-responsive">
+  <table class="table table-bordered">
+    <thead>
+        <tr>
+          <th rowspan="3"></th>
+          <th colspan="{{$date_cnts['month1']}}">{{date_formatA($dates[0],"n")}}月</th>
+          <th colspan="{{$date_cnts['month2']}}">{{date_formatA($dates[20],"n")}}月</th>
+        <tr>
+          @forelse ($dates as $date)
+            <th>{{date_formatA($date,"d")}}</th>
+          @empty
+          @endforelse
+        </tr>
+        <tr>
+          @forelse ($dates as $date)
+            <td><span style="color :{{ holiday_color($date) }};">
+              {{ date_week($date) }}</span></td>
+          @empty
+          @endforelse
+        </tr>
+    </thead>
+    <tbody>
+    @forelse ($works as $work)
       <tr>
-        <th rowspan="3"></th>
-        <th colspan="{{$date_cnts['month1']}}">{{date_formatA($dates[0],"n")}}月</th>
-        <th colspan="{{$date_cnts['month2']}}">{{date_formatA($dates[20],"n")}}月</th>
-      <tr>
-        @forelse ($dates as $date)
-          <th>{{date_formatA($date,"d")}}</th>
+        @forelse ($work as $s)
+          <td style="white-space: nowrap;">{!! $s !!}</td>
         @empty
         @endforelse
       </tr>
-      <tr>
-        @forelse ($dates as $date)
-          <td><span style="color :{{ holiday_color($date) }};">
-            {{ date_week($date) }}</span></td>
-        @empty
-        @endforelse
-      </tr>
-  </thead>
-  <tbody>
-  @forelse ($works as $work)
-    <tr>
-      @forelse ($work as $s)
-        <td>{!! $s !!}</td>
-      @empty
-      @endforelse
-    </tr>
-  @empty
-  @endforelse
- </tbody>
-</table>
+    @empty
+    @endforelse
+   </tbody>
+  </table>
+  </div>
 </div>
 <script>
   $(function(){
