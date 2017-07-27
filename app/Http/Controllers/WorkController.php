@@ -163,9 +163,10 @@ class WorkController extends Controller
         $keydate = Carbon::parse($p.$affiliation->group->monthstart)->subMonths(1);
 
         //同一グループユーザ取得
-        $affiliations = Affiliation::where('id', $affiliation->group_id)
+        $affiliations = Affiliation::where('group_id', $affiliation->group_id)
                     ->where('applystart_at','<=',$now->format('Y/m/d'))
-                    ->where('applyend_at','>=',$now->format('Y/m/d'))->get();
+                    ->where('applyend_at','>=',$now->format('Y/m/d'))
+                    ->orderBy('affiliations.employee_no','asc')->get();
 
         //表示日付取得
         while(1)

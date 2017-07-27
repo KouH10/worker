@@ -18,31 +18,32 @@
   		</div>
     </div>
   <div class ="table-responsive">
-  <table class="table table-bordered">
+  <table class="table table-bordered table-striped">
     <thead>
         <tr>
-          <th rowspan="3"></th>
-          <th colspan="{{$date_cnts['month1']}}">{{date_formatA($dates[0],"n")}}月</th>
-          <th colspan="{{$date_cnts['month2']}}">{{date_formatA($dates[20],"n")}}月</th>
+          <th class="info" rowspan="3"></th>
+          <td align="center" class="info" colspan="{{$date_cnts['month1']}}">{{date_formatA($dates[0],"n")}}月</td>
+          <td align="center" class="info" colspan="{{$date_cnts['month2']}}">{{date_formatA($dates[20],"n")}}月</td>
         <tr>
           @forelse ($dates as $date)
-            <th>{{date_formatA($date,"d")}}</th>
+            <td align="center" class="info" >{{date_formatA($date,"d")}}</td>
           @empty
           @endforelse
         </tr>
         <tr>
           @forelse ($dates as $date)
-            <td><span style="color :{{ holiday_color($date) }};">
+            <td align="center" class="info"><span style="color :{{ holiday_color($date) }};">
               {{ date_week($date) }}</span></td>
           @empty
           @endforelse
         </tr>
     </thead>
-    <tbody>
+    <tbody class="">
     @forelse ($works as $work)
       <tr>
-        @forelse ($work as $s)
-          <td style="white-space: nowrap;">{!! $s !!}</td>
+        <th style="white-space: nowrap;">{!! $work[0] !!}</th>
+        @forelse (array_slice($work,1) as $s)
+          <td align="center" style="white-space: nowrap;"><small>{!! $s !!}</small></td>
         @empty
         @endforelse
       </tr>
@@ -76,6 +77,7 @@
          minViewMode: 1,
          autoclose: true,
        });
+       $("#YearMonth").datepicker("setDate", "{{str_replace('月','/',str_replace('年','/',$period))}}01");
   		 $('#YearMonth').datepicker('show');
        $('#YearMonth').datepicker().on('changeDate', function(e) {
          $('#period').val(e.format(0,"yyyy年mm月"));

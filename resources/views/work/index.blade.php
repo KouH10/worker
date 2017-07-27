@@ -30,7 +30,7 @@
     <tr>
       <th><span class='lead'>出勤</span></th>
       <td><span class='lead'>{{$gokei['date']}}</span> 日</td>
-      <th><span class='lead'>総労働 </span></th>
+      <th><span class='lead'>総勤務 </span></th>
       <td><span class='lead'>{{gethour($gokei['worktime'])}}</span> 時間</td>
       <th><span class='lead'>残業</span></th>
       <td><span class='lead'>{{gethour($gokei['overtime'])}}</span> 時間</td>
@@ -110,6 +110,7 @@ $(function(){
        minViewMode: 1,
        autoclose: true,
      });
+     $("#YearMonth").datepicker("setDate", "{{str_replace('月','/',str_replace('年','/',$period))}}01");
 		 $('#YearMonth').datepicker('show');
      $('#YearMonth').datepicker().on('changeDate', function(e) {
        $('#period').val(e.format(0,"yyyy年mm月"));
