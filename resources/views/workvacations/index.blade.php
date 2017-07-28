@@ -5,15 +5,13 @@
 <form class="form-horizontal" role="form" method="POST" action="{{ url('workvacations') }}">
 {!! csrf_field() !!}
   <div>
-    <h2 id="line">休暇申請一覧</h2>
+    <h2 id="line">休暇申請</h2>
   </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <a href="{{url('workvacations/create')}}" class="btn btn-primary" >新規登録</a>
-        </div>
+    <div class="clearfix">
+      <div class="pull-right" class="btn-group btn-group-sm">
+  			<a href="{{url('workvacations/create')}}" class="btn btn-primary" >新規登録</a>
+  		</div>
     </div>
-
-    <table class="table table-striped">
 	<table class="table table-striped">
 	<thead>
       <tr>
