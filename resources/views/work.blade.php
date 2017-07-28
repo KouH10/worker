@@ -4,12 +4,15 @@
 <div class="container">
 <form class="form-horizontal" role="form" method="POST" action="{{ url('work') }}">
 {!! csrf_field() !!}
-    <div class="col-sm-9">
-        <div class="row" style="padding-bottom:20px;">
+    <div class="col-sm-9" align="center">
+        <div class="row">
             <div class="col-xs-12 .col-md-12">
-                <h2><span id="date"></span>&nbsp;&nbsp;&nbsp;<span id="time"></span></h2>
+                <span id="time" class="clock"></span>
                 <input type="hidden" id="date_before"/>
             </div>
+        </div>
+        <div style="padding-bottom:30px;" >
+          <span id="date"  class="time"></span>
         </div>
         <div class="row" style="padding-bottom:20px;">
             <div class="col-xs-6 .col-md-6" >
@@ -17,13 +20,13 @@
                 @if(is_null($work->attendance_at) === false or is_null($work->attendance_stamp_at) === false)
                      disabled
                 @endif
-                >勤務開始</button></br>
+                ><i class="fa fa-sun-o" aria-hidden="true"></i>  勤務開始</button></br>
                 &nbsp;&nbsp;<span class="lead">{{ date_formatA($work->attendance_at,"G:i") }}</span>
                 &nbsp;&nbsp;<span class="lead">(&nbsp;{{ date_formatA($work->attendance_stamp_at,"G:i") }}&nbsp;)</span>
             </div>
             <div class="col-xs-6 .col-md-6">
                 <button type="submit"  value="leaving" name="leaving" class="line-btn"
-                >勤務終了</button></br>
+                ><i class="fa fa-moon-o" aria-hidden="true"></i>  勤務終了</button></br>
                 &nbsp;&nbsp;<span class="lead">{{ date_formatA($work->leaving_at,"G:i") }}</span>
                 &nbsp;&nbsp;<span class="lead">(&nbsp;{{ date_formatA($work->leaving_stamp_at,"G:i") }}&nbsp;)</span>
             </div>

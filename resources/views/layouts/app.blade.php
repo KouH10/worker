@@ -63,7 +63,7 @@
                         @if (Auth::guest())
                             <li><a href="{{ url('/login') }}">ログイン</a></li>
                         @else
-
+                            <li><a href="{{ url('/work') }}"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
                             <li><a href="{{ url('/workconfirmation') }}">勤務表</a></li>
                             <li><a href="{{ url('/workvacations') }}">休暇申請</a></li>
                             <li><a href="{{ url('/work/list') }}">グループ実績表</a></li>

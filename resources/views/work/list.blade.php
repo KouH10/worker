@@ -20,7 +20,7 @@
   				 class="btn btn-default"><i class="fa fa-chevron-right" aria-hidden="true" title="翌月"></i></a>
   		</div>
     </div>
-  <div class ="table-responsive">
+  <div class ="table-responsive panel panel-default">
   <table class="table table-bordered table-striped">
     <thead>
         <tr>

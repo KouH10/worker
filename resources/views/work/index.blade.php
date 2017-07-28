@@ -28,15 +28,15 @@
 		</div>
   </div>
   <br>
-  <div class="text-center">
+  <div class="panel panel-default">
     <table class="table table-bordered" >
     <tr>
-      <th><span class='lead'>出勤</span></th>
-      <td><span class='lead'>{{$gokei['date']}}</span> 日</td>
+      <th ><span class='lead'>出勤</span></th>
+      <td align="center" ><span class='lead'>{{$gokei['date']}}</span> 日</td>
       <th><span class='lead'>総勤務 </span></th>
-      <td><span class='lead'>{{gethour($gokei['worktime'])}}</span> 時間</td>
+      <td align="center" ><span class='lead'>{{gethour($gokei['worktime'])}}</span> 時間</td>
       <th><span class='lead'>残業</span></th>
-      <td><span class='lead'>{{gethour($gokei['overtime'])}}</span> 時間</td>
+      <td align="center" ><span class='lead'>{{gethour($gokei['overtime'])}}</span> 時間</td>
     </tr>
     </table>
   </div>
