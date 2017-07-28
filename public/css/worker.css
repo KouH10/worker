@@ -1,0 +1,33 @@
+/*! 見出し用 */
+h2#line {
+    position: relative;
+    padding-left: 25px;
+    border-bottom: 3px solid #40AAEF;
+    color: #40AAEF;
+    font-size: 25px;
+    line-height: 32px;
+}
+
+h2#line:before {
+    position: absolute;
+    top: -8px;
+    left: 7px;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    height: 12px;
+    width: 12px;
+    background: #40AAEF;
+    content: "";
+}
+
+h2#line:after {
+    position: absolute;
+    top: 8px;
+    left: 2px;
+    transform: rotate(15deg);
+    -webkit-transform: rotate(15deg);
+    height: 8px;
+    width: 8px;
+    background: #40AAEF;
+    content: "";
+}

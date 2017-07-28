@@ -68,7 +68,7 @@ td.tfoot{
         <tbody>
             @forelse ($works as $work)
             <tr>
-              <td width="65px"><span class="{{ holiday_color($work['date_at']) }}">
+              <td width="65px"><span class="{{ holiday_color($work['date_at'],"") }}">
       	    	{{ date_formatA($work['date_at'],"m/d")}}({{date_week($work['date_at']) }})</span></td>
       	    	<td width="50px">{{ date_formatA($work['attendance_at'],"G:i") }}</td>
       	    	<td width="50px"><span>{{wdate_nextDay($work['date_at'],$work['leaving_at']) }} {{ date_formatA($work['leaving_at'],"G:i") }}</span></td>

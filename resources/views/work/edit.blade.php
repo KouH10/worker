@@ -14,9 +14,12 @@
 @endif
 <form class="form-horizontal" role="form" method="POST" action="{{ url('workregister') }}">
 {!! csrf_field() !!}
+ <div>
+  <h2 id="line">勤務訂正</h2>
+</div>
   <div class="row" style="padding-bottom:20px;">
   	<div class="col-sm-12" >
-	  	<h2 style="color :{{ holiday_color($work->date_at) }};" >{{ date("Y/m/d",strtotime($work->date_at))}}({{date_week($work->date_at) }})</h2>
+	  	<h2 style="color :{{ holiday_color($work->date_at,"") }};" >{{ date("Y/m/d",strtotime($work->date_at))}}({{date_week($work->date_at) }})</h2>
 	  	<input type="hidden" name="date_at" id="date_at" value="{{ date("Y-m-d",strtotime($work->date_at))}} "/>
 	</div>
   </div>
@@ -130,12 +133,13 @@
 	  	<div class="col-sm-12">
 	  	  <div style="float: right">
 	      <button type="submit" value="work_regist" name="work_regist" class="btn btn-primary " >登 録</button>
-	      &nbsp;&nbsp;&nbsp;&nbsp;<a href="{{ url('workconfirmation') }}?period={{$period}}" value="back" name="back" class="btn btn-default">戻 る</a>
+	      &nbsp;&nbsp;&nbsp;&nbsp;<a href="{{ url('workconfirmation') }}?period={{$period}}&user_id={{$work->user_id}}" value="back" name="back" class="btn btn-default">戻 る</a>
 	      </div>
 	    </div>
 	  </div>
 	 </div>
   </div>
+  <input id="user_id" name="user_id" type="hidden" value="{{ $work->user_id }}"/>
 </form>
 </div>
 <script>

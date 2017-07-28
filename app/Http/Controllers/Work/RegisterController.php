@@ -29,12 +29,13 @@ class RegisterController extends Controller
     */
     public function index(Request $request)
     {
+			$user_id = $request->get('user_id');
     	$date = Carbon::parse($request->get('date_at'));
-    	$work = work::where('user_id', \Auth::user()->id)
+    	$work = work::where('user_id', $user_id)
 	            ->where('date_at',$date)->first();
 	    if(count($work) === 0)
 	    {
-        $work = new Work(array('date_at'=>$date));
+        $work = new Work(array('date_at'=>$date,'user_id'=>$user_id));
 	    }
 
 			if( $date->format('d') <=20 ){
@@ -63,18 +64,18 @@ class RegisterController extends Controller
             return redirect()->back()->withErrors($validation->errors())->withInput();
         }
         $target = Carbon::parse($request->get('date_at'));
-
+				$user_id = $request->get('user_id');
         //グループ情報取得
-        $affiliation = Affiliation::where('user_id', \Auth::user()->id)
+        $affiliation = Affiliation::where('user_id', $user_id)
                     ->where('applystart_at','<=',$target->format('Y/m/d'))
                     ->where('applyend_at','>=',$target->format('Y/m/d'))->first();
 
-      	$work = work::where('user_id', \Auth::user()->id)
+      	$work = work::where('user_id', $user_id)
           	->where('date_at',Carbon::parse($request->get('date_at')))->first();
 
           if(count($work) === 0)
         {
-        	$work = new Work(array('user_id' => \Auth::user()->id,'date_at'=>Carbon::parse($request->get('date_at'))));
+        	$work = new Work(array('user_id' => $user_id,'date_at'=>Carbon::parse($request->get('date_at'))));
         }
 
           // 出勤時間設定
@@ -143,7 +144,7 @@ class RegisterController extends Controller
 					}else{
 							$period = $target->addMonths(1)->format('Y年m月');
 					}
-					return redirect()->to('/workconfirmation?period='.$period);
+					return redirect()->to('/workconfirmation?period='.$period .'&user_id=' .$user_id);
 
     }
 }

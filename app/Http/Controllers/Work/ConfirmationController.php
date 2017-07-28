@@ -32,8 +32,14 @@ class ConfirmationController extends Controller
     public function index(Request $request)
     {
         $now = Carbon::now('Asia/Tokyo');
+        $user_id = \Auth::user()->id;
 
-        $affiliation = Affiliation::where('user_id', \Auth::user()->id)
+        if( !is_null($request->get('user_id')))
+        {
+          $user_id = $request->get('user_id');
+        }
+
+        $affiliation = Affiliation::where('user_id', $user_id)
                     ->where('applystart_at','<=',$now->format('Y/m/d'))
                     ->where('applyend_at','>=',$now->format('Y/m/d'))->first();
 
@@ -55,7 +61,7 @@ class ConfirmationController extends Controller
         $keydate = Carbon::parse($p.$affiliation->group->monthstart)->subMonths(1);
         while(1){
           if($now_end->eq($keydate)){break;}
-            $work = work::where('user_id', \Auth::user()->id)
+            $work = work::where('user_id', $user_id)
               ->where('date_at',$keydate)->first();
           if(count($work) === 0)
           {
@@ -82,7 +88,7 @@ class ConfirmationController extends Controller
             'nighttime'=>$work->nighttime,
             'holidaytime'=>$work->holidaytime,
           ];
-          $workVacation = WorkVacation::where('user_id', \Auth::user()->id)
+          $workVacation = WorkVacation::where('user_id', $user_id)
             ->where('date_at',$keydate)->first();
           if(count($workVacation) === 0)
           {
@@ -95,7 +101,7 @@ class ConfirmationController extends Controller
           $keydate->addDay(1);
         }
 
-       	return view('work/index',compact('period','works','gokei'));
+       	return view('work/index',compact('period','works','gokei','affiliation'));
     }
 
     /**
@@ -107,11 +113,17 @@ class ConfirmationController extends Controller
     {
 
         $period = $request->get('period');
+        $user_id = \Auth::user()->id;
+        if( !is_null($request->get('user_id')))
+        {
+          $user_id = $request->get('user_id');
+        }
+
         $p = str_replace("年","/",$period);
         $p = str_replace("月","/",$p);
         $now = Carbon::parse($request->get('dateFrom'));
 
-        $affiliation = Affiliation::where('user_id', \Auth::user()->id)
+        $affiliation = Affiliation::where('user_id', $user_id)
                     ->where('applystart_at','<=',$now->format('Y/m/d'))
                     ->where('applyend_at','>=',$now->format('Y/m/d'))->first();
 
@@ -121,9 +133,9 @@ class ConfirmationController extends Controller
         $keydate = Carbon::parse($p . $affiliation->group->monthstart)->subMonths(1);
         while(1){
           if($now_end->eq($keydate)){break;}
-          $work = work::where('user_id', \Auth::user()->id)
+          $work = work::where('user_id', $user_id)
               ->where('date_at',$keydate)->first();
-	        $work = work::where('user_id', \Auth::user()->id)
+	        $work = work::where('user_id', $user_id)
 	            ->where('date_at',$keydate)->first();
 	        if(count($work) === 0)
 	        {
@@ -149,7 +161,7 @@ class ConfirmationController extends Controller
             'nighttime'=>$work->nighttime,
             'holidaytime'=>$work->holidaytime,
           ];
-          $workVacation = WorkVacation::where('user_id', \Auth::user()->id)
+          $workVacation = WorkVacation::where('user_id', $user_id)
               ->where('date_at',$keydate)->first();
           if(count($workVacation) === 0)
 	        {
@@ -163,7 +175,7 @@ class ConfirmationController extends Controller
         }
 
         /* 同一グループユーザ取得 */
-        $affiliation = Affiliation::where('user_id', \Auth::user()->id)
+        $affiliation = Affiliation::where('user_id', $user_id)
             ->where('applystart_at','<=',$now_end)->where('applyend_at','>=',$now_end)->first();
         if($request->get('report') == 'report')
         {

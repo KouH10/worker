@@ -209,7 +209,7 @@ use App\Libs\HolidayDateTime;
      * @param  Corbon  $dt
      * @return string
      */
-	function holiday_color($dt) {
+	function holiday_color($dt,$color) {
 
 		$holiday = new HolidayDateTime($dt);
 
@@ -226,7 +226,7 @@ use App\Libs\HolidayDateTime;
 				break;
 		}
 
-		return "";
+		return $color;
 
 	}
 

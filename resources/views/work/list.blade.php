@@ -3,6 +3,9 @@
 @section('content')
 <div class="container">
   {!! csrf_field() !!}
+  <div>
+    <h2 id="line">グループ実績表</h2>
+  </div>
     <div class="clearfix">
   	  <div class="pull-left"><h3>{{ $period }}度</h3></div>
       <div class="pull-right" class="btn-group btn-group-sm">
@@ -21,18 +24,18 @@
   <table class="table table-bordered table-striped">
     <thead>
         <tr>
-          <th class="info" rowspan="3"></th>
-          <td align="center" class="info" colspan="{{$date_cnts['month1']}}">{{date_formatA($dates[0],"n")}}月</td>
-          <td align="center" class="info" colspan="{{$date_cnts['month2']}}">{{date_formatA($dates[20],"n")}}月</td>
+          <th bgcolor="#2FCDB4" rowspan="3"></th>
+          <td align="center" bgcolor="#2FCDB4" colspan="{{$date_cnts['month1']}}"><span style="color :white;">{{date_formatA($dates[0],"n")}}月</span></td>
+          <td align="center" bgcolor="#2FCDB4" colspan="{{$date_cnts['month2']}}"><span style="color :white;">{{date_formatA($dates[20],"n")}}月</span></td>
         <tr>
           @forelse ($dates as $date)
-            <td align="center" class="info" >{{date_formatA($date,"d")}}</td>
+            <td align="center" bgcolor="#2FCDB4" ><span style="color :white;">{{date_formatA($date,"d")}}<span></td>
           @empty
           @endforelse
         </tr>
         <tr>
           @forelse ($dates as $date)
-            <td align="center" class="info"><span style="color :{{ holiday_color($date) }};">
+            <td align="center" bgcolor="#2FCDB4"><span style="color :{{ holiday_color($date,'white') }};">
               {{ date_week($date) }}</span></td>
           @empty
           @endforelse
