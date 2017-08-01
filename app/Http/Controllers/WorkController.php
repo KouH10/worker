@@ -183,6 +183,7 @@ class WorkController extends Controller
         foreach ($affiliations as $as)
         {
           $datas = array();
+          array_push($datas,$as->user_id);
           array_push($datas,$as->user->name);
           foreach($dates as $d)
           {

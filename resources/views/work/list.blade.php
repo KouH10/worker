@@ -44,8 +44,8 @@
     <tbody class="">
     @forelse ($works as $work)
       <tr>
-        <th style="white-space: nowrap;">{!! $work[0] !!}</th>
-        @forelse (array_slice($work,1) as $s)
+        <th style="white-space: nowrap;"><a href="{{ url('workconfirmation') }}?period={{$period}}&user_id={{$work[0]}}">{!! $work[1] !!}</a></th>
+        @forelse (array_slice($work,2) as $s)
           <td align="center" style="white-space: nowrap;"><small>{!! $s !!}</small></td>
         @empty
         @endforelse

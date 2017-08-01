@@ -41,7 +41,7 @@ class RegisterController extends Controller
 			if( $date->format('d') <=20 ){
 					$period = $date->format('Y年m月');
 			}else{
-					$period = $date->addMonths(1)->format('Y年m月');
+					$period = $date->copy()->addMonths(1)->format('Y年m月');
 			}
 
     	return view('work/edit',compact('work','period'));
@@ -142,7 +142,7 @@ class RegisterController extends Controller
 					if( $target->format('d') <=20 ){
 							$period = $target->format('Y年m月');
 					}else{
-							$period = $target->addMonths(1)->format('Y年m月');
+							$period = $target->copy()->addMonths(1)->format('Y年m月');
 					}
 					return redirect()->to('/workconfirmation?period='.$period .'&user_id=' .$user_id);
 

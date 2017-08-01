@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-<form class="form-horizontal" role="form" method="POST" action="{{ url('') }}">
+<form class="form-horizontal" role="form" method="POST" action="{{ url('/groups') }}">
 {!! csrf_field() !!}
     <h2>グループ一覧表示</h2>
     <div class="row">
