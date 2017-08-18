@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Work;
+use App\WorksGps;
 use App\Affiliation;
 use Illuminate\Http\Request;
 use \Carbon\Carbon;
@@ -129,6 +130,29 @@ class WorkController extends Controller
         }
         $work->save();
 
+        $kbn = "1";
+        if ($request->get('leaving') == 'leaving')
+        {
+          $kbn = "2";
+        }
+        $worksGps = WorksGps::where('work_id', $work->id)
+            ->where('kbn',$kbn)->first();
+        if(count($worksGps) === 0)
+        {
+            $worksGps = new WorksGps(array('work_id' => $work->id,'kbn' =>$kbn));
+        }
+        //現在位置登録
+        if($request->get('gps') == "1")
+        {
+          $worksGps->latitude = $request->get('latitude');
+          $worksGps->longitude = $request->get('longitude');
+          $worksGps->altitude = $request->get('altitude');
+          $worksGps->accuracy = $request->get('accuracy');
+          $worksGps->altitudeAccuracy = $request->get('altitudeAccuracy');
+          $worksGps->heading = $request->get('heading');
+          $worksGps->speed = $request->get('speed');
+          $worksGps->save();
+        }
         return redirect()->to('/work');
     }
 

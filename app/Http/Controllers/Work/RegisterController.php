@@ -38,7 +38,11 @@ class RegisterController extends Controller
         $work = new Work(array('date_at'=>$date,'user_id'=>$user_id));
 	    }
 
-			if( $date->format('d') <=20 ){
+			$affiliation = Affiliation::where('user_id', $user_id)
+									->where('applystart_at','<=',$date->format('Y/m/d'))
+									->where('applyend_at','>=',$date->format('Y/m/d'))->first();
+
+			if( $date->format('d') < $affiliation->group->monthstart ){
 					$period = $date->format('Y年m月');
 			}else{
 					$period = $date->copy()->addMonths(1)->format('Y年m月');
@@ -139,7 +143,7 @@ class RegisterController extends Controller
 					$work->content = $request->get('content');
 					$work->save();
 
-					if( $target->format('d') <=20 ){
+					if( $target->format('d') < $affiliation->group->monthstart ){
 							$period = $target->format('Y年m月');
 					}else{
 							$period = $target->copy()->addMonths(1)->format('Y年m月');
