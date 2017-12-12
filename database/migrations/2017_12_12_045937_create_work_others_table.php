@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateWorkOthersTable extends Migration
+class CreateWorkOtherTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,16 @@ class CreateWorkOthersTable extends Migration
      */
     public function up()
     {
-        Schema::create('work_others', function (Blueprint $table) {
+        Schema::create('work_other', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('work_id')->unsigned();        // ‹Î–±î•ñID
+            $table->integer('work_id')->unsigned();        // å‹¤å‹™æƒ…å ±ID
             $table->foreign('work_id')
                 ->references('id')->on('works')
                 ->onDelete('cascade');
-            $table->string('kbn');                         // ‹æ•ª
-            $table->time('start_at')->nullable();          // ŠJŽnŽžŠÔ
-            $table->time('end_at')->nullable();            // I—¹ŽžŠÔ
-            $table->string('memo')->nullable();            // ƒƒ‚
+            $table->string('kbn');                         // åŒºåˆ†
+            $table->time('start_at')->nullable();          // é–‹å§‹æ™‚é–“
+            $table->time('end_at')->nullable();            // çµ‚äº†æ™‚é–“
+            $table->string('memo')->nullable();            // ãƒ¡ãƒ¢
 
             $table->timestamps();
         });
@@ -35,6 +35,6 @@ class CreateWorkOthersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('work_others');
+        Schema::dropIfExists('work_other');
     }
 }

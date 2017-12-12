@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Work;
 
 use App\Http\Controllers\Controller;
 use App\Work;
-use App\WorkOthers;
+use App\WorkOther;
 use App\Group;
 use App\Affiliation;
 use Illuminate\Http\Request;
@@ -48,11 +48,11 @@ class RegisterController extends Controller
 			}else{
 					$period = $date->copy()->addMonths(1)->format('Y年m月');
 			}
-      $work_others = WorkOthers::where('work_id', $work->id)
+      $work_others = WorkOther::where('work_id', $work->id)
         ->where('kbn','1')->first();
       if(count($work_others) === 0)
       {
-        $work_others = new WorkOthers(array('work_id' => $work->id));
+        $work_others = new WorkOther(array('work_id' => $work->id));
       }
 
     	return view('work/edit',compact('work','period','work_others'));
@@ -134,11 +134,11 @@ class RegisterController extends Controller
 					$work->content = $request->get('content');
 					$work->save();
 
-          $work_others = WorkOthers::where('work_id', $work->id)
+          $work_others = WorkOther::where('work_id', $work->id)
             ->where('kbn','1')->first();
           if(count($work_others) === 0)
           {
-            $work_others = new WorkOthers(array('work_id' => $work->id));
+            $work_others = new WorkOther(array('work_id' => $work->id));
           }
           //自社作業
           if( (!empty($request->get('company_work_start_h')) and !empty($request->get('company_work_start_m'))) or

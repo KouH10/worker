@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Work;
 use App\Http\Controllers\Controller;
 use App\Work;
 use App\WorkVacation;
+use App\WorkOther;
 use App\Affiliation;
 use Illuminate\Http\Request;
 use \Carbon\Carbon;
@@ -161,6 +162,8 @@ class ConfirmationController extends Controller
             'nighttime'=>$work->nighttime,
             'holidaytime'=>$work->holidaytime,
           ];
+
+          // 休暇情報
           $workVacation = WorkVacation::where('user_id', $user_id)
               ->where('date_at',$keydate)->first();
           if(count($workVacation) === 0)
@@ -170,6 +173,22 @@ class ConfirmationController extends Controller
           {
               $data += array('groupvacation_id'=>$workVacation->groupvacation_id);
           }
+
+          // 自社作業
+          $work_other = WorkOther::where('work_id', $work->id)
+            ->where('kbn','1')->first();
+          if(count($work_other) === 0)
+	        {
+	        	  $data += array('other_start_at'=>null);
+              $data += array('other_end_at'=>null);
+              $data += array('other_memo'=>'');
+	        }else
+          {
+              $data += array('other_start_at'=>$work_other->start_at);
+              $data += array('other_end_at'=>$work_other->end_at);
+              $data += array('other_memo'=>$work_other->memo);
+          }
+
 	        array_push( $works,$data);
           $keydate->addDay(1);
         }
@@ -201,7 +220,7 @@ class ConfirmationController extends Controller
         }elseif($request->get('csv') == 'csv')
         {
             $export_csv_title = array( "日付", "出勤", "退勤", "総時間", "所定内", "時間外",
-              "深夜", "休日", "休暇","出勤打刻","退勤打刻","勤務内容" );
+              "深夜", "休日", "休暇","出勤打刻","退勤打刻","勤務内容","自社作業開始","自社作業終了","自社作業内容" );
             $stream = fopen('php://temp', 'w');
             fputcsv($stream, $export_csv_title);
 
@@ -218,7 +237,9 @@ class ConfirmationController extends Controller
                 'groupvacation_id'=>getvacationname($wk['groupvacation_id']),
                 'attendance_stamp_at'=>$wk['attendance_stamp_at'],
                 'leaving_stamp_at'=>$wk['leaving_stamp_at'],
-                'content'=>$wk['content']
+                'other_start_at'=>wdate_nextDay($wk['date_at'],$wk['other_start_at']).date_formatA($wk['other_start_at'],"G:i"),
+                'other_end_at'=>wdate_nextDay($wk['date_at'],$wk['other_end_at']).date_formatA($wk['other_end_at'],"G:i"),
+                'other_memo'=>$wk['other_memo'],
               ];
               fputcsv($stream, $cw);
             }
