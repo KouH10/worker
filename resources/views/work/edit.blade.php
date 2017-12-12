@@ -129,6 +129,64 @@
 	  			<textarea  row="3" class="form-control" name="content" id="content" placeholder="出勤" >{{ old('content',$work->content) }}</textarea>
 	  		</div>
 	  </div>
+    <div class="form-group @if(!empty($errors->first('company_work'))) has-error @endif">
+        <label for="company_work" class="control-label  col-sm-2">自社作業時間</label>
+        <div class="col-sm-10">
+          <ul class="list-inline">
+            <li>
+              <select class="form-control combo_select" id="company_work_start_h" name="company_work_start_h" style="width: 80px">
+               <option value=""></option>
+               @for ($i = 0; $i < 24; $i++)
+                 <option value="{{$i}}" @if( old('company_work_start_h',getDateformatN($work_others->start_at,$work->date_at,'G')) == "$i" ) selected @endif  >{{$i}}</option>
+               @endfor
+               @for ($i = 0; $i < 24; $i++)
+                 <option value="翌{{$i}}" @if( old('company_work_start_h',getDateformatN($work_others->start_at,$work->date_at,'G')) == ('翌'."$i") ) selected @endif  >翌{{$i}}</option>
+               @endfor
+              </select>
+            </li>
+            <li><span>:</span></li>
+            <li>
+              <select class="form-control combo_select" id="company_work_start_m" name="company_work_start_m" style="width: 80px">
+                  <option value=""></option>
+                  <option value="00" @if( old('company_work_start_m',getDateformat($work_others->start_at,'i')) == '00' ) selected @endif  >00</option>
+                  <option value="15" @if( old('company_work_start_m',getDateformat($work_others->start_at,'i')) == '15' ) selected @endif  >15</option>
+                  <option value="30" @if( old('company_work_start_m',getDateformat($work_others->start_at,'i')) == '30' ) selected @endif  >30</option>
+                  <option value="45" @if( old('company_work_start_m',getDateformat($work_others->start_at,'i')) == '45' ) selected @endif  >45</option>
+              </select>
+            </li>
+            <li>
+              <label class="control-label">～</label>
+            </li>
+            <li>
+              <select class="form-control combo_select" id="company_work_end_h" name="company_work_end_h" style="width: 80px">
+               <option value=""></option>
+               @for ($i = 0; $i < 24; $i++)
+                 <option value="{{$i}}" @if( old('company_work_end_h',getDateformatN($work_others->end_at,$work->date_at,'G')) == "$i" ) selected @endif  >{{$i}}</option>
+               @endfor
+               @for ($i = 0; $i < 24; $i++)
+                 <option value="翌{{$i}}" @if( old('company_work_end_h',getDateformatN($work_others->end_at,$work->date_at,'G')) == ('翌'."$i") ) selected @endif  >翌{{$i}}</option>
+               @endfor
+              </select>
+            </li>
+            <li><span>:</span></li>
+            <li>
+              <select class="form-control combo_select" id="company_work_end_m" name="company_work_end_m" style="width: 80px">
+                  <option value=""></option>
+                  <option value="00" @if( old('company_work_end_m',getDateformat($work_others->end_at,'i')) == '00' ) selected @endif  >00</option>
+                  <option value="15" @if( old('company_work_end_m',getDateformat($work_others->end_at,'i')) == '15' ) selected @endif  >15</option>
+                  <option value="30" @if( old('company_work_end_m',getDateformat($work_others->end_at,'i')) == '30' ) selected @endif  >30</option>
+                  <option value="45" @if( old('company_work_end_m',getDateformat($work_others->end_at,'i')) == '45' ) selected @endif  >45</option>
+              </select>
+            </li>
+          </ul>
+        </div>
+    </div>
+    <div class="form-group" >
+        <label for="content" class="control-label col-sm-2">自社作業内容</label>
+        <div class="col-sm-10">
+          <textarea  row="1" class="form-control" name="company_work_memo" id="content" placeholder="定例会" >{{ old('company_work_memo',$work_others->memo) }}</textarea>
+        </div>
+    </div>
 	  <div class="row">
 	  	<div class="col-sm-12">
 	  	  <div style="float: right">

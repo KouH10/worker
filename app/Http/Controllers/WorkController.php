@@ -30,7 +30,7 @@ class WorkController extends Controller
     {
         $now_d = Carbon::now('Asia/Tokyo')->format('Y/m/d');
         $now_t = Carbon::now('Asia/Tokyo')->format('H:i');
-        /* 本日の打刻情報取得　*/
+        /* 本日の打刻情報取得 */
         $work = work::where('user_id', \Auth::user()->id)
             ->where('date_at',Carbon::today('Asia/Tokyo'))->first();
         if(count($work) === 0)

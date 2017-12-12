@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Work;
 
 use App\Http\Controllers\Controller;
 use App\Work;
+use App\WorkOthers;
 use App\Group;
 use App\Affiliation;
 use Illuminate\Http\Request;
@@ -47,8 +48,14 @@ class RegisterController extends Controller
 			}else{
 					$period = $date->copy()->addMonths(1)->format('Y年m月');
 			}
+      $work_others = WorkOthers::where('work_id', $work->id)
+        ->where('kbn','1')->first();
+      if(count($work_others) === 0)
+      {
+        $work_others = new WorkOthers(array('work_id' => $work->id));
+      }
 
-    	return view('work/edit',compact('work','period'));
+    	return view('work/edit',compact('work','period','work_others'));
     }
 
     /**
@@ -77,31 +84,15 @@ class RegisterController extends Controller
       	$work = work::where('user_id', $user_id)
           	->where('date_at',Carbon::parse($request->get('date_at')))->first();
 
-          if(count($work) === 0)
+        if(count($work) === 0)
         {
         	$work = new Work(array('user_id' => $user_id,'date_at'=>Carbon::parse($request->get('date_at'))));
         }
 
           // 出勤時間設定
-          if(!empty($request->get('attendance_at_h')) and !empty($request->get('attendance_at_m')))
-          {
-          	$work->attendance_at = wdate_start($request->get('date_at')
-						     .$request->get('attendance_at_h') .':' .$request->get('attendance_at_m') );
-          }else
-          {
-          	$work->attendance_at = null;
-          }
-
+          $work->attendance_at = $this->uniteDatime($request,'attendance_at_h','attendance_at_m');
           // 退勤時間設定
-          if(empty($request->get('leaving_at_h')) or empty($request->get('leaving_at_m'))){
-						$work->leaving_at = null;
-          }elseif( substr($request->get('leaving_at_h'),0,3) == '翌'){
-          	$work->leaving_at = wdate_end( Carbon::parse($request->get('date_at'))->addDay(1)->toDateString()
-						  .substr($request->get('leaving_at_h'),3) .':' .$request->get('leaving_at_m') );
-          }else {
-						$work->leaving_at = wdate_end( $request->get('date_at')
-							.$request->get('leaving_at_h') .':' .$request->get('leaving_at_m') );
-          }
+          $work->leaving_at = $this->uniteDatime($request,'leaving_at_h','leaving_at_m');
 
 					$work->worktime = 0;
 					$work->predeterminedtime = 0;
@@ -143,6 +134,26 @@ class RegisterController extends Controller
 					$work->content = $request->get('content');
 					$work->save();
 
+          $work_others = WorkOthers::where('work_id', $work->id)
+            ->where('kbn','1')->first();
+          if(count($work_others) === 0)
+          {
+            $work_others = new WorkOthers(array('work_id' => $work->id));
+          }
+          //自社作業
+          if( (!empty($request->get('company_work_start_h')) and !empty($request->get('company_work_start_m'))) or
+              (!empty($request->get('company_work_end_h')) and !empty($request->get('company_work_end_m'))) or
+              (!empty($request->get('company_work_memo'))))
+          {
+              $work_others->kbn = '1';
+              $work_others->start_at = $this->uniteDatime($request,'company_work_start_h','company_work_start_m');
+              $work_others->end_at = $this->uniteDatime($request,'company_work_end_h','company_work_end_m');
+              $work_others->memo = $request->get('company_work_memo');
+              $work_others->save();
+          }else {
+              $work_others->delete();
+          }
+
 					if( $target->format('d') < $affiliation->group->monthstart ){
 							$period = $target->format('Y年m月');
 					}else{
@@ -150,5 +161,24 @@ class RegisterController extends Controller
 					}
 					return redirect()->to('/workconfirmation?period='.$period .'&user_id=' .$user_id);
 
+    }
+
+
+    /**
+    * 入力した時間と分を結合して日時を渡す
+    *
+    * @return String
+    */
+    private function uniteDatime(Request $request,$hour,$minute)
+    {
+        if(empty($request->get($hour)) or empty($request->get($minute))){
+          return null;
+        }elseif( substr($request->get($hour),0,3) == '翌'){
+          return wdate_end( Carbon::parse($request->get('date_at'))->addDay(1)->toDateString()
+            .substr($request->get($hour),3) .':' .$request->get($minute) );
+        }else {
+          return wdate_end( $request->get('date_at')
+            .$request->get($hour) .':' .$request->get($minute) );
+        }
     }
 }
