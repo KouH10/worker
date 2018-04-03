@@ -92,9 +92,9 @@ class WorkVacationsController extends Controller
       $wv->user_id = \Auth::user()->id;
       $wv->date_at = Carbon::parse($request->date_at);;
       $wv->groupvacation_id = $request->groupvacation_id;
-      if($wv->groupvacation_id == 4)
+      if($wv->groupvacation_id == 4 or $wv->groupvacation_id == 8)
         $wv->change_at = Carbon::parse($request->change_at);
-      elseif($wv->groupvacation_id == 10)
+      elseif($wv->groupvacation_id == 11)
       {
         $wv->start_at = $request->start_at;
         $wv->end_at = $request->end_at;
@@ -136,9 +136,9 @@ class WorkVacationsController extends Controller
         $wv = WorkVacation::find($id);
 
         $wv->groupvacation_id = $request->groupvacation_id;
-        if($wv->groupvacation_id == 4)
+        if($wv->groupvacation_id == 4 or $wv->groupvacation_id == 8)
           $wv->change_at = Carbon::parse($request->change_at);
-        elseif($wv->groupvacation_id == 10)
+        elseif($wv->groupvacation_id == 11)
         {
           $wv->start_at = $request->start_at;
           $wv->end_at = $request->end_at;
