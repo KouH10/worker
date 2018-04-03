@@ -66,7 +66,9 @@
                             <li><a href="{{ url('/work') }}"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
                             <li><a href="{{ url('/workconfirmation') }}">勤務表</a></li>
                             <li><a href="{{ url('/workvacations') }}">休暇申請</a></li>
-                            <li><a href="{{ url('/work/list') }}">グループ実績表</a></li>
+                            @if (Auth::user()->role=='leader')
+                              <li><a href="{{ url('/work/list') }}">グループ実績表</a></li>
+                            @endif
                             @if (Auth::user()->role=='admin')
                               <li><a href="">管理者設定</a></li>
                             @endif
