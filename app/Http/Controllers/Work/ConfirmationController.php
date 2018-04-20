@@ -134,10 +134,8 @@ class ConfirmationController extends Controller
         $keydate = Carbon::parse($p . $affiliation->group->monthstart)->subMonths(1);
         while(1){
           if($now_end->eq($keydate)){break;}
-          $work = work::where('user_id', $user_id)
+          $work = work::where('user_id', $user_id)->where('worktime', '>', '0')
               ->where('date_at',$keydate)->first();
-	        $work = work::where('user_id', $user_id)
-	            ->where('date_at',$keydate)->first();
 	        if(count($work) === 0)
 	        {
 	        	$work = new Work(array('date_at'=>Carbon::parse($keydate)));
